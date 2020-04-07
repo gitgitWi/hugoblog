@@ -1,0 +1,334 @@
+---
+title: "Lecture 0403-1 Text Mining with R"
+output: github_document
+always_allow_html: true
+toc : true
+toc_sticky : true
+categories:
+  - Study
+  - R
+tags:
+  - R
+  - bigdata
+  - LectureNotes
+  - text-mining
+---
+
+# 텍스트 마이닝 Text Mining
+
+## Text-mining 개요
+
+###분석절차
+- 형태소분석 Morphology Analsys
+- 명사, 동사, 형용사 등 의미 지닌 품사 단어 추출
+- 빈도표
+- 시각화
+
+## ex1. 힙합 가사 분석
+
+### import libraries and data files
+
+```{r}
+library(KoNLP)
+library(memoise)
+library(dplyr)
+library(stringr)
+```
+
+Sejong 보다 많은 단어 데이터 보유한 NIADic 사용 ; 983012 개 단어, KoNLP 함수
+
+```{r}
+useNIADic()
+```
+
+txt file 은 마지막 줄에서 엔터 없으면 불완전한 마지막이라는 경고메시지 발생
+
+```{r}
+lyrics <- readLines("/Users/WnJ/Desktop/johnwi_KNOU/Programming/1. R/handouts/0401/Data/hiphop.txt")
+head(lyrics)
+```
+
+
+### `str_replace_all(data, before, after)` : 특수문자 제거
+
+- `"\\W"` : 모든 특수문자
+
+```{r}
+lyrics <- str_replace_all(lyrics, "\\W", " ")
+head(lyrics)
+```
+
+```{r}
+class (lyrics)
+dim (lyrics)
+str (lyrics)
+#View (lyrics)
+```
+
+### `extractNoun()` : 명사만 추출
+
+```{r}
+extractNoun("대한민국 영토는 한반도와 그 부속도서로 한다")
+```
+
+가사에서 명사 추출
+
+```{r}
+nouns <- extractNoun(lyrics)
+
+class (nouns)
+dim (nouns)
+#str (nouns)
+
+```
+
+### 추출한 명사 list를 문자열 벡터로 변환해 단어별 빈도표 생성
+
+`unlist()` : list type 은 `table()` 함수에서 사용 불가
+
+```{r}
+countw <- table (unlist(nouns))
+dim (countw)
+head (countw)
+tail (countw)
+```
+
+### to data frame
+
+```{r}
+dfwords <- as.data.frame(countw, stringsAsFactors = F)
+dim (dfwords)
+summary(dfwords)
+
+```
+
+```{r}
+dfwords <- rename(dfwords, word = Var1, freq = Freq)
+dim (dfwords)
+summary(dfwords)
+```
+
+### 두 단어 이상인 경우만 추출
+
+```{r}
+dfwords <- filter(dfwords, nchar(word) >= 2 )
+summary (dfwords)
+```
+
+상위 20개만 확인
+
+```{r}
+top20 <- dfwords %>% arrange(desc(freq)) %>% head(20)
+top20
+```
+
+## Word Cloud
+
+### import libraries
+
+```{r}
+library(wordcloud)
+library(RColorBrewer)
+```
+
+### `brewer.pal(, "coloreset")` : 단어 색상목록
+
+```{r}
+pal <- brewer.pal(8, "Dark2")
+```
+
+### create wordcloud
+
+```{r}
+set.seed(1234)
+
+wordcloud(words = dfwords$word, freq = dfwords$freq, 
+          min.freq = 2,                    # 최소 단어 빈도
+          max.words = 200,                 # 표현 단어 수
+          random.order = F,                # 고빈도 단어 중앙 배치 
+          rot.per = .1,                    # 회전 단어 비율
+          scale = c(4, 0.3),               # 단어 크기 범위
+          colors = pal,                    # 색깔 목록
+          family = "NanumBarunGothic"           # font, Mac에서 한글 깨짐 해결 위한 폰트 설정
+          )
+```
+
+
+## ex2. 여고생들의 고민
+
+```{r}
+qq <- readLines("/Users/WnJ/Desktop/johnwi_KNOU/Programming/1. R/handouts/0403/remake.txt")
+class (qq)
+dim (qq)
+head(qq)
+```
+
+```{r}
+qq <- str_replace_all(qq, "\\W", " ")
+head(qq)
+```
+
+```{r}
+qqn <- extractNoun(qq)
+
+class(qqn)
+dim(qqn)
+```
+
+```{r}
+qqncount <- table(unlist(qqn))
+class(qqncount)
+dim(qqncount)
+```
+
+```{r}
+dfqq <- as.data.frame(qqncount, stringsAsFactors = F)
+class (dfqq)
+dim (dfqq)
+summary (dfqq)
+```
+
+```{r}
+dfqq <- filter(dfqq, nchar(Var1) >= 2)
+summary(dfqq)
+```
+
+#### `wordcloud`
+
+```{r}
+pal <- brewer.pal(8, "Dark2")
+
+wordcloud(words = dfqq$Var1, freq = dfqq$Freq, 
+          min.freq = 2, max.words = 200, random.order = F, rot.per = 0, scale = c(5, 0.3), colors = pal,
+          family = "NanumBarunGothic")
+```
+
+
+## ex3. 국정원 트윗
+
+- 국정원 댓글 사건 당시 뉴스타파가 공개한 국정원 트윗 자료
+
+```{r}
+twt <- read.csv("~/Desktop/johnwi_KNOU/Programming/1. R/handouts/0401/Data/twitter.csv",
+                    header = T,
+                    stringsAsFactors = F,
+                    fileEncoding = "UTF-8")
+
+twt <- rename(twt, no = 번호, id = 계정이름, data = 작성일, tw = 내용)
+
+```
+
+```{r}
+class (twt)
+dim (twt)
+head (twt)
+
+```
+
+```{r}
+twt$tw <- str_replace_all(twt$tw, "\\W", " ")
+```
+
+```{r}
+twt_nouns <- extractNoun(twt$tw)
+```
+
+```{r}
+head(twt_nouns)
+```
+
+```{r}
+twtcount <- table(unlist(twt_nouns))
+```
+
+```{r}
+df_twt <- as.data.frame(twtcount, stringsAsFactors = F)
+df_twt <- rename (df_twt, word = Var1, freq = Freq)
+summary(df_twt)
+```
+
+```{r}
+df_twt <- filter(df_twt, nchar(word) >= 2)
+```
+
+#### frequncy table
+
+```{r}
+tw20 <- df_twt %>% arrange(desc(freq)) %>% head(20)
+tw20
+```
+
+#### `ggplot`
+
+```{r}
+library(ggplot2)
+order <- arrange(tw20, freq)$word
+
+ggplot (data = tw20, aes(x = word, y = freq)) + ylim(0,2500) + geom_col() + coord_flip() + scale_x_discrete(limit = order) + geom_text(aes(label = freq), hjust = -0.3, family = "NanumBarunGothic")
+```
+
+#### `wordcloud`
+
+```{r}
+pal <- brewer.pal(12, "Paired")
+
+wordcloud(words = df_twt$word, freq = df_twt$freq, 
+          min.freq = 2, max.words = 200, random.order = F, rot.per = .1, scale = c(6, 0.3), colors = pal,
+          family = "NanumBarunGothic")
+```
+
+
+# Text Mining & WordCloud2
+
+
+WordCloud2 Introduction page
+- https://cran.r-project.org/web/packages/wordcloud2/vignettes/wordcloud.html
+
+
+```{r}
+library(devtools)
+library(htmlwidgets)
+library(htmltools)
+library(jsonlite)
+library(yaml)
+library(base64enc)
+library(tm)
+library(wordcloud2)
+```
+
+Wordcloud2 그리기 기본
+
+```{r}
+wordcloud2(tw20)
+```
+
+```{r}
+wordcloud2(tw20, size = 0.5, col = "random-dark" )
+```
+
+`rotateRatio = ` : 몇 도로 기울일 건지
+
+```{r}
+wordcloud2(tw20, size = 1, col = "random-dark" , rotateRatio = 90)
+```
+
+```{r}
+wordcloud2(tw20, size = 1.5, col = "random-light" , shape = "pentagon", backgroundColor = "dark")
+```
+
+JS 문법으로 color 범위 지정
+
+```{r}
+In_out_colors = "function(word, weight){ return (weight > 100) ? '#F3EF12' : '#1EC612' }"
+```
+
+
+`shpae = ` : "circle", "cardioid", "diamond", "triangle-forward", "triangel", "pentagon", "star"
+
+```{r}
+wordcloud2(df_twt, shape = 'circle', size = 0.8, color = htmlwidgets::JS(In_out_colors), backgroundColor = "black")
+```
+
+
+
+

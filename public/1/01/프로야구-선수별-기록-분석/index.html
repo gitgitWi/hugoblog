@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="ko-KR">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="author" content="gitgitWi">
+<meta name="keywords" content="">
+<meta name="description" content="한국 프로야구 선수별 기록 분석 - 2013년 import data library(dplyr) ## ## 다음의 패키지를 부착합니다: &#39;dplyr&#39; ## The following objects are masked from &#39;package:stats&#39;: ## ## filter, lag ## The following objects are masked from &#39;package:base&#39;: ## ## intersect, setdiff, setequal, union library(readr) data &lt;- read_csv(&quot;~/Desktop/johnwi_KNOU/Programming/1. R/handouts/0406/data/주요선수별성적-2013년.csv&quot;, locale = locale(encoding = &quot;cp949&quot;)) ## Parsed with column specification: ## cols( ## .default = col_double(), ## 선수명 = col_character(), ## 포지션 = col_character(), ## 팀 = col_character() ## ) ## See spec(.">
+
+
+<meta property="og:description" content="한국 프로야구 선수별 기록 분석 - 2013년 import data library(dplyr) ## ## 다음의 패키지를 부착합니다: &#39;dplyr&#39; ## The following objects are masked from &#39;package:stats&#39;: ## ## filter, lag ## The following objects are masked from &#39;package:base&#39;: ## ## intersect, setdiff, setequal, union library(readr) data &lt;- read_csv(&quot;~/Desktop/johnwi_KNOU/Programming/1. R/handouts/0406/data/주요선수별성적-2013년.csv&quot;, locale = locale(encoding = &quot;cp949&quot;)) ## Parsed with column specification: ## cols( ## .default = col_double(), ## 선수명 = col_character(), ## 포지션 = col_character(), ## 팀 = col_character() ## ) ## See spec(.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="프로야구 선수별 기록 분석">
+<meta name="twitter:title" content="프로야구 선수별 기록 분석">
+<meta property="og:url" content="/blogdown/1/01/%ED%94%84%EB%A1%9C%EC%95%BC%EA%B5%AC-%EC%84%A0%EC%88%98%EB%B3%84-%EA%B8%B0%EB%A1%9D-%EB%B6%84%EC%84%9D/">
+<meta property="twitter:url" content="/blogdown/1/01/%ED%94%84%EB%A1%9C%EC%95%BC%EA%B5%AC-%EC%84%A0%EC%88%98%EB%B3%84-%EA%B8%B0%EB%A1%9D-%EB%B6%84%EC%84%9D/">
+<meta property="og:site_name" content="gitgitWi&#39;s blogdown pages">
+<meta property="og:description" content="한국 프로야구 선수별 기록 분석 - 2013년 import data library(dplyr) ## ## 다음의 패키지를 부착합니다: &#39;dplyr&#39; ## The following objects are masked from &#39;package:stats&#39;: ## ## filter, lag ## The following objects are masked from &#39;package:base&#39;: ## ## intersect, setdiff, setequal, union library(readr) data &lt;- read_csv(&quot;~/Desktop/johnwi_KNOU/Programming/1. R/handouts/0406/data/주요선수별성적-2013년.csv&quot;, locale = locale(encoding = &quot;cp949&quot;)) ## Parsed with column specification: ## cols( ## .default = col_double(), ## 선수명 = col_character(), ## 포지션 = col_character(), ## 팀 = col_character() ## ) ## See spec(.">
+<meta name="twitter:description" content="한국 프로야구 선수별 기록 분석 - 2013년 import data library(dplyr) ## ## 다음의 패키지를 부착합니다: &#39;dplyr&#39; ## The following objects are masked from &#39;package:stats&#39;: ## ## filter, lag ## The following objects are masked from &#39;package:base&#39;: ## ## intersect, setdiff, setequal, union library(readr) data &lt;- read_csv(&quot;~/Desktop/johnwi_KNOU/Programming/1. R/handouts/0406/data/주요선수별성적-2013년.csv&quot;, locale = locale(encoding = &quot;cp949&quot;)) ## Parsed with column specification: ## cols( ## .default = col_double(), ## 선수명 = col_character(), ## 포지션 = col_character(), ## 팀 = col_character() ## ) ## See spec(.">
+<meta property="og:locale" content="en-us">
+
+  
+  
+  
+  
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://www.gravatar.com/avatar/2b31594a11b6836f0f2b66a053e66bec?s=640">
+  <meta property="twitter:image" content="https://www.gravatar.com/avatar/2b31594a11b6836f0f2b66a053e66bec?s=640">
+
+
+    <title>프로야구 선수별 기록 분석</title>
+
+    <link rel="icon" href="/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="/blogdown/1/01/%ED%94%84%EB%A1%9C%EC%95%BC%EA%B5%AC-%EC%84%A0%EC%88%98%EB%B3%84-%EA%B8%B0%EB%A1%9D-%EB%B6%84%EC%84%9D/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="/blogdown/">gitgitWi&#39;s blogdown pages</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://www.gravatar.com/avatar/2b31594a11b6836f0f2b66a053e66bec?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="/#about">
+          <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/2b31594a11b6836f0f2b66a053e66bec?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">gitgitWi</h4>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/blogdown">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/blogdown/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/blogdown/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/blogdown/archives">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/blogdown/#about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://gitgitWi.github.io" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://gitgitWi.github.io/blogdown" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/blogdown/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="4"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title" itemprop="headline">
+      프로야구 선수별 기록 분석
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="0001-01-01T00:00:00Z">
+        
+  
+  
+  
+  
+    0001-January-1
+  
+
+      </time>
+    
+    
+  </div>
+
+</div>
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              
+
+
+<div id="한국-프로야구-선수별-기록-분석---2013년" class="section level2">
+<h2>한국 프로야구 선수별 기록 분석 - 2013년</h2>
+<div id="import-data" class="section level3">
+<h3>import data</h3>
+<pre class="r"><code>library(dplyr)</code></pre>
+<pre><code>## 
+## 다음의 패키지를 부착합니다: &#39;dplyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<pre class="r"><code>library(readr)
+
+data &lt;- read_csv(&quot;~/Desktop/johnwi_KNOU/Programming/1. R/handouts/0406/data/주요선수별성적-2013년.csv&quot;, locale = locale(encoding = &quot;cp949&quot;))</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   .default = col_double(),
+##   선수명 = col_character(),
+##   포지션 = col_character(),
+##   팀 = col_character()
+## )</code></pre>
+<pre><code>## See spec(...) for full column specifications.</code></pre>
+<pre class="r"><code>data4 &lt;- data[, c(2,21,22)]
+
+head(data4)</code></pre>
+<pre><code>## # A tibble: 6 x 3
+##   선수명 연봉대비출루율 연봉대비타점율
+##   &lt;chr&gt;           &lt;dbl&gt;          &lt;dbl&gt;
+## 1 김태균           2.96           3.47
+## 2 박병호           8.74          23.4 
+## 3 최정             6.13          11.9 
+## 4 박석민          11.5           20.5 
+## 5 손아섭          10.5           17.2 
+## 6 정성훈           8.1           12.4</code></pre>
+<hr />
+<pre class="r"><code>line1 &lt;- data4$연봉대비출루율
+
+line2 &lt;- data4$연봉대비타점율</code></pre>
+<hr />
+</div>
+<div id="par" class="section level3">
+<h3><code>par()</code></h3>
+<p>그래프 매개 변수 설정 또는 Query</p>
+<p>매개 변수는 tag = value 형식의 par 인수로 지정 또는 tag value 목록으로 전달</p>
+<dl>
+<dt>매개변수 mar</dt>
+<dd><p>플롯의 네 면에 지정된 마진선 수를 나타내는 c() 형태 숫자 벡터</p>
+</dd>
+<dd><p>기본값은 c(5,4,4,2) + 0.1</p>
+</dd>
+</dl>
+<p>매개변수 new
+- 논리적이며 기본값은 FALSE
+- TRUE로 설정시 다음 높은 레벨의 플롯팅 명령은 새 장치에 있는 것처럼 그리기전에 프레임 정리해선 안됨
+현재 고수준 플롯 없는 장치에서 TRUE 사용시 오류 발생</p>
+<pre class="r"><code>par( mar = c(5,4,4,4) + 0.1 )</code></pre>
+<hr />
+<pre class="r"><code>plot(line1, type = &quot;o&quot;,
+     axes = F, ylab = &quot;&quot;, xlab = &quot;&quot;, xlim = , ylim = c(0,50) , main = &quot;한국 야구선수별 기록 분석(2013)&quot; , col=&quot;blue&quot;, lty = 2, lwd=2 , 
+     family = &quot;D2Coding&quot;)
+    
+axis(1, at = 1:25, lab = data4$선수명, las = 2, family = &quot;D2Coding&quot;)
+axis(2, las = 2 )
+
+par (new =T)
+plot (line2, type = &quot;o&quot;, axes = F, ylab = &quot;&quot;, xlab = &quot;&quot;, ylim = c(0, 50), lty = 2, col = &quot;red&quot;)
+axis(4, las = 1)
+
+mtext(side = 4, line = 2.5, &quot;연봉대비 타점율&quot;)
+mtext(side = 2, line = 2.5, &quot;연봉대비 출루율&quot;)
+
+abline(h = seq(0,50,5),
+    v = seq(1,25,1),
+    col = &quot;grey&quot;,
+    lty = 2
+    )
+    
+legend(18, 50, names(data[21:22]),
+    cex = 0.8,
+    col=c(&quot;red&quot;,&quot;blue&quot;),
+    lty = 1,
+    lwd = 2,
+    bg = &quot;white&quot;
+    )</code></pre>
+<p><img src="/blogdown/post/2020-04-07-ln0406.md_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<pre class="r"><code># savePlot (&quot;baseball_4.png&quot;, type = &quot;png&quot;)</code></pre>
+</div>
+<div id="age-column-생성" class="section level3">
+<h3>age column 생성</h3>
+<pre class="r"><code>hits$age &lt;- c(30, 20, 28, 31, 30, 32, 37, 32,
+              37, 34, 36, 30,
+              30, 30, 28, 25, 28, 32, 28,
+              25, 28, 33, 32, 28,
+              29, 29, 28, 33, 34, 31, 39,
+              30, 29, 35, 29, 28,
+              26, 34,  31, 33, 28, 31, 22,
+              29, 29, 28, 29, 19,
+              31, 33, 33, 28, 19, 31, 34,
+              28, 28, 31, 27, 24,
+              31)
+
+head(hits)</code></pre>
+<pre><code>## # A tibble: 6 x 27
+##    rank name   team    AVG     G    PA    AB     R     H  `2B`  `3B`    HR    TB
+##   &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1     1 김현수 LG    0.362   117   511   453    95   164    39     2    20   267
+## 2     2 이정후 넥센  0.359   103   492   435    75   156    30     1     6   206
+## 3     3 안치홍 KIA   0.353   116   492   445    82   157    35     1    22   260
+## 4     4 양의지 두산  0.35    125   472   412    81   144    28     1    21   237
+## 5     5 김재환 두산  0.349   131   571   501   103   175    36     1    44   345
+## 6     6 전준우 롯데  0.347   129   545   495   105   172    35     2    27   292
+## # … with 14 more variables: RBI &lt;dbl&gt;, SAC &lt;dbl&gt;, SF &lt;dbl&gt;, XBH &lt;dbl&gt;,
+## #   GO &lt;dbl&gt;, AO &lt;dbl&gt;, `GO/AO` &lt;dbl&gt;, `GW RBI` &lt;dbl&gt;, `BB/K` &lt;dbl&gt;,
+## #   `P/PA` &lt;dbl&gt;, ISOP &lt;dbl&gt;, XR &lt;dbl&gt;, GPA &lt;dbl&gt;, age &lt;dbl&gt;</code></pre>
+<p>추정 특점 / 타석 값이 .18 보다 큰 데이터만 추출</p>
+</div>
+<div id="지금까지-내용을-한번에-그리기" class="section level3">
+<h3>지금까지 내용을 한번에 그리기</h3>
+<pre class="r"><code>plot (hits$age, hits$TB, pch = 19, col = &quot;steelblue&quot;, cex = 1.5, main = &quot;프로야구 타자의 나이 ~ 성적&quot;, sub = &quot;red: XR/PA&gt;0.18&quot;, xlab = &quot;AGE&quot;, ylab = &quot;TB&quot;, family = &quot;D2Coding&quot;)
+
+hits2 &lt;- hits[hits$XR / hits$PA &gt; 0.18, ]
+
+points(hits2$age, hits2$TB, pch = 19, col = &quot;red&quot;, cex = 1.5)
+
+text(hits2$age, hits2$TB, pos = 3, labels = hits2$name, family = &quot;D2Coding&quot;)
+
+lines(lowess(hits2$TB~hits2$age), lwd = 2, lty = 3)</code></pre>
+<p><img src="/blogdown/post/2020-04-07-ln0406.md_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<hr />
+</div>
+</div>
+<div id="kbo-프로야구-가을야구-예상-분석" class="section level2">
+<h2>KBO 프로야구 가을야구 예상 분석</h2>
+<div id="플레이오프와-코리아시리즈" class="section level4">
+<h4>플레이오프와 코리아시리즈</h4>
+<div id="미리보는-kbo-가을야구" class="section level6">
+<h6>미리보는 KBO 가을야구</h6>
+<ul>
+<li>플레이오프 : 한화 - SK</li>
+<li>코리아시리즈 : SK - 두산</li>
+<li>순서대로 진행된다고 했을때 벌어질 타격전의 예상 시나리오?</li>
+<li>9.19까지 KBO 타격 통계를 바탕으로 예상?</li>
+</ul>
+</div>
+<div id="visualization" class="section level6">
+<h6>Visualization</h6>
+<ul>
+<li>Scatter plot : 타자들 구성 분포 탐색</li>
+<li>Barplot : 팀별 성향 비교</li>
+</ul>
+<hr />
+</div>
+</div>
+<div id="import-data-1" class="section level3">
+<h3>import data</h3>
+<pre class="r"><code>data &lt;- read_csv(&quot;~/Desktop/johnwi_KNOU/Programming/1. R/handouts/0406/data/hit20180927.csv&quot;, locale = locale(encoding = &quot;cp949&quot;))</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   .default = col_double(),
+##   name = col_character(),
+##   team = col_character()
+## )</code></pre>
+<pre><code>## See spec(...) for full column specifications.</code></pre>
+<pre class="r"><code>head(data)</code></pre>
+<pre><code>## # A tibble: 6 x 26
+##    rank name   team    AVG     G    PA    AB     R     H  `2B`  `3B`    HR    TB
+##   &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1     1 김현수 LG    0.362   117   511   453    95   164    39     2    20   267
+## 2     2 이정후 넥센  0.359   103   492   435    75   156    30     1     6   206
+## 3     3 안치홍 KIA   0.353   116   492   445    82   157    35     1    22   260
+## 4     4 양의지 두산  0.35    125   472   412    81   144    28     1    21   237
+## 5     5 김재환 두산  0.349   131   571   501   103   175    36     1    44   345
+## 6     6 전준우 롯데  0.347   129   545   495   105   172    35     2    27   292
+## # … with 13 more variables: RBI &lt;dbl&gt;, SAC &lt;dbl&gt;, SF &lt;dbl&gt;, XBH &lt;dbl&gt;,
+## #   GO &lt;dbl&gt;, AO &lt;dbl&gt;, `GO/AO` &lt;dbl&gt;, `GW RBI` &lt;dbl&gt;, `BB/K` &lt;dbl&gt;,
+## #   `P/PA` &lt;dbl&gt;, ISOP &lt;dbl&gt;, XR &lt;dbl&gt;, GPA &lt;dbl&gt;</code></pre>
+<p>타석당 타점을 중요하다고 보고 비율변수 추가</p>
+<pre class="r"><code>data$pparbi &lt;- data$RBI / data$PA
+# head(data)
+
+data1 &lt;- data[order(data$pparbi, decreasing = T),]</code></pre>
+<p>전반적인 상관관계 확인</p>
+<pre class="r"><code>pairs(data1[, 4:7])</code></pre>
+<p><img src="/blogdown/post/2020-04-07-ln0406.md_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<pre class="r"><code>plot (data1$AVG, data1$ISOP,
+      cex = 0.9, pch = 19,
+      col = ifelse ( data1$team == &quot;두산&quot;, &quot;navy&quot;,
+              ifelse(data1$team == &quot;SK&quot;, &quot;red&quot;,
+                ifelse(data1$team == &quot;한화&quot;, &quot;orange&quot;, &quot;lightblue&quot;))
+                ),
+      main = &quot;가을 야구 Prewview - stat a.o. 20180919&quot;,
+      xlab = &quot;AVG&quot;, ylab = &quot;ISOP&quot;,
+      sub = &quot;only high XR/PA hitters labeled&quot;,
+      family = &quot;D2Coding&quot;
+      )
+
+text(data1$AVG, data1$ISOP, labels = ifelse( (data1$XR/data1$PA)&gt;.17 &amp; data1$team %in% c(&quot;두산&quot;, &quot;SK&quot;, &quot;한화&quot;), as.character(data1$name), &quot;&quot;), pos = 3, cex = 0.7, family = &quot;D2Coding&quot;)
+abline(h=.28, lty=3)
+abline(v=.32, lty=3)</code></pre>
+<p><img src="/blogdown/post/2020-04-07-ln0406.md_files/figure-html/unnamed-chunk-13-2.png" width="672" />
+```</p>
+<ul>
+<li>타석이 많다고 타율이 자동적으로 높지는 않다</li>
+</ul>
+</div>
+</div>
+
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--disabled">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/blogdown/2020/04/create-blog-pages-by-r-blogdown/" data-tooltip="Create Blog Pages by R-Blogdown">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/blogdown/1/01/%ED%94%84%EB%A1%9C%EC%95%BC%EA%B5%AC-%EC%84%A0%EC%88%98%EB%B3%84-%EA%B8%B0%EB%A1%9D-%EB%B6%84%EC%84%9D/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/blogdown/1/01/%ED%94%84%EB%A1%9C%EC%95%BC%EA%B5%AC-%EC%84%A0%EC%88%98%EB%B3%84-%EA%B8%B0%EB%A1%9D-%EB%B6%84%EC%84%9D/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=/blogdown/1/01/%ED%94%84%EB%A1%9C%EC%95%BC%EA%B5%AC-%EC%84%A0%EC%88%98%EB%B3%84-%EA%B8%B0%EB%A1%9D-%EB%B6%84%EC%84%9D/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2020 <a href="https://gitgitWi.github.io/blogdown">gitgitWi blogdown</a>. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--disabled">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/blogdown/2020/04/create-blog-pages-by-r-blogdown/" data-tooltip="Create Blog Pages by R-Blogdown">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/blogdown/1/01/%ED%94%84%EB%A1%9C%EC%95%BC%EA%B5%AC-%EC%84%A0%EC%88%98%EB%B3%84-%EA%B8%B0%EB%A1%9D-%EB%B6%84%EC%84%9D/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/blogdown/1/01/%ED%94%84%EB%A1%9C%EC%95%BC%EA%B5%AC-%EC%84%A0%EC%88%98%EB%B3%84-%EA%B8%B0%EB%A1%9D-%EB%B6%84%EC%84%9D/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=/blogdown/1/01/%ED%94%84%EB%A1%9C%EC%95%BC%EA%B5%AC-%EC%84%A0%EC%88%98%EB%B3%84-%EA%B8%B0%EB%A1%9D-%EB%B6%84%EC%84%9D/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2Fblogdown%2F1%2F01%2F%25ED%2594%2584%25EB%25A1%259C%25EC%2595%25BC%25EA%25B5%25AC-%25EC%2584%25A0%25EC%2588%2598%25EB%25B3%2584-%25EA%25B8%25B0%25EB%25A1%259D-%25EB%25B6%2584%25EC%2584%259D%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=%2Fblogdown%2F1%2F01%2F%25ED%2594%2584%25EB%25A1%259C%25EC%2595%25BC%25EA%25B5%25AC-%25EC%2584%25A0%25EC%2588%2598%25EB%25B3%2584-%25EA%25B8%25B0%25EB%25A1%259D-%25EB%25B6%2584%25EC%2584%259D%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=%2Fblogdown%2F1%2F01%2F%25ED%2594%2584%25EB%25A1%259C%25EC%2595%25BC%25EA%25B5%25AC-%25EC%2584%25A0%25EC%2588%2598%25EB%25B3%2584-%25EA%25B8%25B0%25EB%25A1%259D-%25EB%25B6%2584%25EC%2584%259D%2F">
+          <i class="fa fa-google-plus"></i><span>Share on Google&#43;</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://www.gravatar.com/avatar/2b31594a11b6836f0f2b66a053e66bec?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">gitgitWi</h4>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        maybe student..
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Yongsan.Seoul/KR
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('/blogdown/images/cover.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = '\/blogdown\/1\/01\/%ED%94%84%EB%A1%9C%EC%95%BC%EA%B5%AC-%EC%84%A0%EC%88%98%EB%B3%84-%EA%B8%B0%EB%A1%9D-%EB%B6%84%EC%84%9D\/';
+          
+            this.page.identifier = '\/blogdown\/1\/01\/%ED%94%84%EB%A1%9C%EC%95%BC%EA%B5%AC-%EC%84%A0%EC%88%98%EB%B3%84-%EA%B8%B0%EB%A1%9D-%EB%B6%84%EC%84%9D\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'gitgitrm';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+

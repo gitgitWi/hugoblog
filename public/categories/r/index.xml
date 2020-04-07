@@ -1,25 +1,54 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>R on A Hugo website</title>
-    <link>/categories/r/</link>
-    <description>Recent content in R on A Hugo website</description>
+    <title>R on gitgitWi&#39;s blogdown pages</title>
+    <link>/blogdown/categories/r/</link>
+    <description>Recent content in R on gitgitWi&#39;s blogdown pages</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Thu, 23 Jul 2015 21:13:14 -0500</lastBuildDate>
+    <language>ko-KR</language>
+    <lastBuildDate>Tue, 07 Apr 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/categories/r/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/blogdown/categories/r/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Hello R Markdown</title>
-      <link>/2015/07/23/hello-r-markdown/</link>
-      <pubDate>Thu, 23 Jul 2015 21:13:14 -0500</pubDate>
+      <title>Create Blog Pages by R-Blogdown</title>
+      <link>/blogdown/2020/04/create-blog-pages-by-r-blogdown/</link>
+      <pubDate>Tue, 07 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>/2015/07/23/hello-r-markdown/</guid>
-      <description>R MarkdownThis is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.
-You can embed an R code chunk like this:
-summary(cars)## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 26.00 ## Median :15.0 Median : 36.00 ## Mean :15.4 Mean : 42.98 ## 3rd Qu.</description>
+      <guid>/blogdown/2020/04/create-blog-pages-by-r-blogdown/</guid>
+      <description>Necessary Packages  blogdown hugo  install.packages(&amp;quot;blogdown&amp;quot;)library(blogdown)blogdown::install_hugo()</description>
+    </item>
+    
+    <item>
+      <title>LN0407 R Markdown</title>
+      <link>/blogdown/2020/04/ln0407-r-markdown/</link>
+      <pubDate>Tue, 07 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/blogdown/2020/04/ln0407-r-markdown/</guid>
+      <description>Math LaTeX 사용방법 표준 LaTeX 수학 문법 이용해 작성
+참고 사이트 : https://www.codecogs.com/latex/eqneditor.php
+ 디스플레이 수식 :  \[ y_{i} = \sqrt[3]{x_{i}} + \sum_{1}^{n} \]
+ 인라인 수식 : 문장안에서 \(y_{i} = \sqrt[3]{x_{i}} + \sum_{1}^{n}\)와 같이 수식 입력    표 생성  기존 Markdown 방식  구분 | 내용 -|- 이름 | 이름이다 나이 | 1251 졸업연도 | 1923 입사연도 | 1332 설명 | 시간을 거스르는 자   구분 내용    이름 이름이다  나이 1251  졸업연도 1923  입사연도 1332  설명 시간을 거스르는 자     R Markdown  ex.</description>
+    </item>
+    
+    <item>
+      <title>Lecture 0403-1 Text Mining with R</title>
+      <link>/blogdown/1/01/lecture-0403-1-text-mining-with-r/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/blogdown/1/01/lecture-0403-1-text-mining-with-r/</guid>
+      <description>true  텍스트 마이닝 Text Mining Text-mining 개요 ###분석절차 - 형태소분석 Morphology Analsys - 명사, 동사, 형용사 등 의미 지닌 품사 단어 추출 - 빈도표 - 시각화
+ ex1. 힙합 가사 분석 import libraries and data files library(KoNLP) ## Checking user defined dictionary! library(memoise) library(dplyr) ## ## 다음의 패키지를 부착합니다: &amp;#39;dplyr&amp;#39; ## The following objects are masked from &amp;#39;package:stats&amp;#39;: ## ## filter, lag ## The following objects are masked from &amp;#39;package:base&amp;#39;: ## ## intersect, setdiff, setequal, union library(stringr) Sejong 보다 많은 단어 데이터 보유한 NIADic 사용 ; 983012 개 단어, KoNLP 함수</description>
+    </item>
+    
+    <item>
+      <title>Lecture 0403-2 Visualization Maps &amp; Graphs with R</title>
+      <link>/blogdown/1/01/lecture-0403-2-visualization-maps-graphs-with-r/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/blogdown/1/01/lecture-0403-2-visualization-maps-graphs-with-r/</guid>
+      <description>true  Visualization Maps Choropleth Map  지역별 통계치를 색깔 차이로 표현 인구나 소득 같은 특성   미국 주별 강력 범죄율 단계 구분도 import libraries library(devtools) ## 필요한 패키지를 로딩중입니다: usethis # library(htmlwidgets) # library(htmltools) library(jsonlite) library(yaml) library(base64enc) library(tm) ## 필요한 패키지를 로딩중입니다: NLP # library(wordcloud2) # library(ggplot2) library(tibble) # maps library(ggmap) ## 필요한 패키지를 로딩중입니다: ggplot2 ## ## 다음의 패키지를 부착합니다: &amp;#39;ggplot2&amp;#39; ## The following object is masked from &amp;#39;package:NLP&amp;#39;: ## ## annotate ## Google&amp;#39;s Terms of Service: https://cloud.</description>
     </item>
     
   </channel>

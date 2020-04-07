@@ -1,44 +1,72 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on A Hugo website</title>
-    <link>/post/</link>
-    <description>Recent content in Posts on A Hugo website</description>
+    <title>Posts on gitgitWi&#39;s blogdown pages</title>
+    <link>/blogdown/post/</link>
+    <description>Recent content in Posts on gitgitWi&#39;s blogdown pages</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Fri, 30 Dec 2016 21:49:57 -0700</lastBuildDate>
+    <language>ko-KR</language>
+    <lastBuildDate>Tue, 07 Apr 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/blogdown/post/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>A Plain Markdown Post</title>
-      <link>/2016/12/30/a-plain-markdown-post/</link>
-      <pubDate>Fri, 30 Dec 2016 21:49:57 -0700</pubDate>
+      <title>conn to OracleDB, import XML/JSON files</title>
+      <link>/blogdown/2020/04/conn-to-oracledb-import-xml/json-files/</link>
+      <pubDate>Tue, 07 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>/2016/12/30/a-plain-markdown-post/</guid>
-      <description>This is a post written in plain Markdown (*.md) instead of R Markdown (*.Rmd). The major differences are:
- You cannot run any R code in a plain Markdown document, whereas in an R Markdown document, you can embed R code chunks (```{r}); A plain Markdown post is rendered through Blackfriday, and an R Markdown document is compiled by rmarkdown and Pandoc.  There are many differences in syntax between Blackfriday&amp;rsquo;s Markdown and Pandoc&amp;rsquo;s Markdown.</description>
+      <guid>/blogdown/2020/04/conn-to-oracledb-import-xml/json-files/</guid>
+      <description>DB 연결 Necessary Libraries library(RJDBC) ## 필요한 패키지를 로딩중입니다: DBI ## 필요한 패키지를 로딩중입니다: rJava library(rJava) library(igraph) ## ## 다음의 패키지를 부착합니다: &amp;#39;igraph&amp;#39; ## The following objects are masked from &amp;#39;package:stats&amp;#39;: ## ## decompose, spectrum ## The following object is masked from &amp;#39;package:base&amp;#39;: ## ## union jdbcDriver &amp;lt;- JDBC(driverClass = &amp;quot;oracle.jdbc.OracleDriver&amp;quot;, classPath = &amp;quot;/Users/WnJ/Desktop/johnwi_KNOU/Programming/DB/oracle/ojdbc6.jar&amp;quot;) conn &amp;lt;- dbConnect(jdbcDriver, &amp;quot;jdbc:oracle:thin:@//localhost:1521/xe&amp;quot;, &amp;quot;dokdok&amp;quot;, &amp;quot;1234&amp;quot;) result &amp;lt;- dbGetQuery(conn, &amp;quot;select * from TEST&amp;quot;) head(result) ## NAME PHONE ## 1 test1 010-1234-1234 ## 2 test2 &amp;lt;NA&amp;gt; ## 3 &amp;lt;NA&amp;gt; &amp;lt;NA&amp;gt; ## 4 &amp;lt;NA&amp;gt; &amp;lt;NA&amp;gt; ## 5 &amp;lt;NA&amp;gt; &amp;lt;NA&amp;gt; ## 6 &amp;lt;NA&amp;gt; &amp;lt;NA&amp;gt;   sqldf : Oracle Query 실행을 위한 package library(sqldf) ## 필요한 패키지를 로딩중입니다: gsubfn ## 필요한 패키지를 로딩중입니다: proto ## 필요한 패키지를 로딩중입니다: RSQLite head(iris) ## Sepal.</description>
     </item>
     
     <item>
-      <title>Hello R Markdown</title>
-      <link>/2015/07/23/hello-r-markdown/</link>
-      <pubDate>Thu, 23 Jul 2015 21:13:14 -0500</pubDate>
+      <title>Create Blog Pages by R-Blogdown</title>
+      <link>/blogdown/2020/04/create-blog-pages-by-r-blogdown/</link>
+      <pubDate>Tue, 07 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>/2015/07/23/hello-r-markdown/</guid>
-      <description>R MarkdownThis is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.
-You can embed an R code chunk like this:
-summary(cars)## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 26.00 ## Median :15.0 Median : 36.00 ## Mean :15.4 Mean : 42.98 ## 3rd Qu.</description>
+      <guid>/blogdown/2020/04/create-blog-pages-by-r-blogdown/</guid>
+      <description>Necessary Packages  blogdown hugo  install.packages(&amp;quot;blogdown&amp;quot;)library(blogdown)blogdown::install_hugo()</description>
     </item>
     
     <item>
-      <title>Lorem Ipsum</title>
-      <link>/2015/01/01/lorem-ipsum/</link>
-      <pubDate>Thu, 01 Jan 2015 13:09:13 -0600</pubDate>
+      <title>LN0407 R Markdown</title>
+      <link>/blogdown/2020/04/ln0407-r-markdown/</link>
+      <pubDate>Tue, 07 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>/2015/01/01/lorem-ipsum/</guid>
-      <description>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</description>
+      <guid>/blogdown/2020/04/ln0407-r-markdown/</guid>
+      <description>Math LaTeX 사용방법 표준 LaTeX 수학 문법 이용해 작성
+참고 사이트 : https://www.codecogs.com/latex/eqneditor.php
+ 디스플레이 수식 :  \[ y_{i} = \sqrt[3]{x_{i}} + \sum_{1}^{n} \]
+ 인라인 수식 : 문장안에서 \(y_{i} = \sqrt[3]{x_{i}} + \sum_{1}^{n}\)와 같이 수식 입력    표 생성  기존 Markdown 방식  구분 | 내용 -|- 이름 | 이름이다 나이 | 1251 졸업연도 | 1923 입사연도 | 1332 설명 | 시간을 거스르는 자   구분 내용    이름 이름이다  나이 1251  졸업연도 1923  입사연도 1332  설명 시간을 거스르는 자     R Markdown  ex.</description>
+    </item>
+    
+    <item>
+      <title>프로야구 선수별 기록 분석</title>
+      <link>/blogdown/2020/04/%ED%94%84%EB%A1%9C%EC%95%BC%EA%B5%AC-%EC%84%A0%EC%88%98%EB%B3%84-%EA%B8%B0%EB%A1%9D-%EB%B6%84%EC%84%9D/</link>
+      <pubDate>Tue, 07 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/blogdown/2020/04/%ED%94%84%EB%A1%9C%EC%95%BC%EA%B5%AC-%EC%84%A0%EC%88%98%EB%B3%84-%EA%B8%B0%EB%A1%9D-%EB%B6%84%EC%84%9D/</guid>
+      <description>한국 프로야구 선수별 기록 분석 - 2013년 import data library(dplyr) ## ## 다음의 패키지를 부착합니다: &amp;#39;dplyr&amp;#39; ## The following objects are masked from &amp;#39;package:stats&amp;#39;: ## ## filter, lag ## The following objects are masked from &amp;#39;package:base&amp;#39;: ## ## intersect, setdiff, setequal, union library(readr) data &amp;lt;- read_csv(&amp;quot;~/Desktop/johnwi_KNOU/Programming/1. R/handouts/0406/data/주요선수별성적-2013년.csv&amp;quot;, locale = locale(encoding = &amp;quot;cp949&amp;quot;)) ## Parsed with column specification: ## cols( ## .default = col_double(), ## 선수명 = col_character(), ## 포지션 = col_character(), ## 팀 = col_character() ## ) ## See spec(.</description>
+    </item>
+    
+    <item>
+      <title>Lecture 0403-1 Text Mining with R</title>
+      <link>/blogdown/1/01/lecture-0403-1-text-mining-with-r/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/blogdown/1/01/lecture-0403-1-text-mining-with-r/</guid>
+      <description>true  텍스트 마이닝 Text Mining Text-mining 개요 ###분석절차 - 형태소분석 Morphology Analsys - 명사, 동사, 형용사 등 의미 지닌 품사 단어 추출 - 빈도표 - 시각화
+ ex1. 힙합 가사 분석 import libraries and data files library(KoNLP) ## Checking user defined dictionary! library(memoise) library(dplyr) ## ## 다음의 패키지를 부착합니다: &amp;#39;dplyr&amp;#39; ## The following objects are masked from &amp;#39;package:stats&amp;#39;: ## ## filter, lag ## The following objects are masked from &amp;#39;package:base&amp;#39;: ## ## intersect, setdiff, setequal, union library(stringr) Sejong 보다 많은 단어 데이터 보유한 NIADic 사용 ; 983012 개 단어, KoNLP 함수</description>
+    </item>
+    
+    <item>
+      <title>Lecture 0403-2 Visualization Maps &amp; Graphs with R</title>
+      <link>/blogdown/1/01/lecture-0403-2-visualization-maps-graphs-with-r/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/blogdown/1/01/lecture-0403-2-visualization-maps-graphs-with-r/</guid>
+      <description>true  Visualization Maps Choropleth Map  지역별 통계치를 색깔 차이로 표현 인구나 소득 같은 특성   미국 주별 강력 범죄율 단계 구분도 import libraries library(devtools) ## 필요한 패키지를 로딩중입니다: usethis # library(htmlwidgets) # library(htmltools) library(jsonlite) library(yaml) library(base64enc) library(tm) ## 필요한 패키지를 로딩중입니다: NLP # library(wordcloud2) # library(ggplot2) library(tibble) # maps library(ggmap) ## 필요한 패키지를 로딩중입니다: ggplot2 ## ## 다음의 패키지를 부착합니다: &amp;#39;ggplot2&amp;#39; ## The following object is masked from &amp;#39;package:NLP&amp;#39;: ## ## annotate ## Google&amp;#39;s Terms of Service: https://cloud.</description>
     </item>
     
   </channel>

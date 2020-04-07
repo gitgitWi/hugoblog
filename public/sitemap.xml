@@ -3,63 +3,119 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>/2016/12/30/a-plain-markdown-post/</loc>
-    <lastmod>2016-12-30T21:49:57-07:00</lastmod>
+    <loc>/blogdown/tags/blog/</loc>
+    <lastmod>2020-04-07T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/post/</loc>
-    <lastmod>2016-12-30T21:49:57-07:00</lastmod>
+    <loc>/blogdown/categories/blogdown/</loc>
+    <lastmod>2020-04-07T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/</loc>
+    <loc>/blogdown/categories/</loc>
+    <lastmod>2020-04-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/blogdown/2020/04/conn-to-oracledb-import-xml/json-files/</loc>
+    <lastmod>2020-04-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/blogdown/2020/04/create-blog-pages-by-r-blogdown/</loc>
+    <lastmod>2020-04-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/blogdown/tags/lecturenotes/</loc>
+    <lastmod>2020-04-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/blogdown/2020/04/ln0407-r-markdown/</loc>
+    <lastmod>2020-04-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/blogdown/post/</loc>
+    <lastmod>2020-04-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/blogdown/tags/r/</loc>
+    <lastmod>2020-04-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/blogdown/categories/r/</loc>
+    <lastmod>2020-04-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/blogdown/tags/r-markdown/</loc>
+    <lastmod>2020-04-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/blogdown/categories/study/</loc>
+    <lastmod>2020-04-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/blogdown/tags/</loc>
+    <lastmod>2020-04-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/blogdown/2020/04/%ED%94%84%EB%A1%9C%EC%95%BC%EA%B5%AC-%EC%84%A0%EC%88%98%EB%B3%84-%EA%B8%B0%EB%A1%9D-%EB%B6%84%EC%84%9D/</loc>
+    <lastmod>2020-04-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/blogdown/about/</loc>
     <lastmod>2016-05-05T21:48:51-07:00</lastmod>
   </url>
   
   <url>
-    <loc>/about/</loc>
+    <loc>/blogdown/</loc>
     <lastmod>2016-05-05T21:48:51-07:00</lastmod>
   </url>
   
   <url>
-    <loc>/categories/</loc>
-    <lastmod>2015-07-23T21:13:14-05:00</lastmod>
+    <loc>/blogdown/archives/</loc>
   </url>
   
   <url>
-    <loc>/2015/07/23/hello-r-markdown/</loc>
-    <lastmod>2015-07-23T21:13:14-05:00</lastmod>
+    <loc>/blogdown/tags/basic-statistics/</loc>
   </url>
   
   <url>
-    <loc>/tags/plot/</loc>
-    <lastmod>2015-07-23T21:13:14-05:00</lastmod>
+    <loc>/blogdown/tags/bigdata/</loc>
   </url>
   
   <url>
-    <loc>/categories/r/</loc>
-    <lastmod>2015-07-23T21:13:14-05:00</lastmod>
+    <loc>/blogdown/tags/graph/</loc>
   </url>
   
   <url>
-    <loc>/tags/r-markdown/</loc>
-    <lastmod>2015-07-23T21:13:14-05:00</lastmod>
+    <loc>/blogdown/1/01/lecture-0403-1-text-mining-with-r/</loc>
   </url>
   
   <url>
-    <loc>/tags/regression/</loc>
-    <lastmod>2015-07-23T21:13:14-05:00</lastmod>
+    <loc>/blogdown/1/01/lecture-0403-2-visualization-maps-graphs-with-r/</loc>
   </url>
   
   <url>
-    <loc>/tags/</loc>
-    <lastmod>2015-07-23T21:13:14-05:00</lastmod>
+    <loc>/blogdown/tags/text-mining/</loc>
   </url>
   
   <url>
-    <loc>/2015/01/01/lorem-ipsum/</loc>
-    <lastmod>2015-01-01T13:09:13-06:00</lastmod>
+    <loc>/blogdown/tags/visualizion/</loc>
+  </url>
+  
+  <url>
+    <loc>/blogdown/2020-04-07-ln0406.md/</loc>
   </url>
   
 </urlset>

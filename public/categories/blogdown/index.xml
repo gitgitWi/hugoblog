@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Blogdown on gitgitWi&#39;s blogdown pages</title>
+    <link>/blogdown/categories/blogdown/</link>
+    <description>Recent content in Blogdown on gitgitWi&#39;s blogdown pages</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ko-KR</language>
+    <lastBuildDate>Tue, 07 Apr 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/blogdown/categories/blogdown/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Create Blog Pages by R-Blogdown</title>
+      <link>/blogdown/2020/04/create-blog-pages-by-r-blogdown/</link>
+      <pubDate>Tue, 07 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/blogdown/2020/04/create-blog-pages-by-r-blogdown/</guid>
+      <description>Necessary Packages  blogdown hugo  install.packages(&amp;quot;blogdown&amp;quot;)library(blogdown)blogdown::install_hugo()</description>
+    </item>
+    
+  </channel>
+</rss>

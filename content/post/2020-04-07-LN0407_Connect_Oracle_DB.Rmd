@@ -1,0 +1,176 @@
+---
+title: "conn to OracleDB, import XML/JSON files"
+subtitle: "with R"
+author: "gitgitWi"
+institute: "R Studio / Oracle"
+date: "2020-04-07"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: atom-one-dark
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+---
+## R - Oracle Connection
+
+#### R에서 Oracle DB 이용해 데이터 가져오는 방법
+1. Java 기능 이용
+2. 순수 R package 이용
+
+- R에서는 `select` 구문 실행하는 경우 바로 data.frame으로 리턴
+- 관계형 DB 데이터 사용하는 것이 일반적인 프로그래밍 언어보다 편리
+
+---
+## DB 연결
+#### Necessary Libraries
+
+```{r}
+library(RJDBC)
+library(rJava)
+library(igraph)
+```
+
+---
+
+```{r}
+jdbcDriver <- JDBC(driverClass = "oracle.jdbc.OracleDriver", classPath = "/Users/WnJ/Desktop/johnwi_KNOU/Programming/DB/oracle/ojdbc6.jar")
+```
+
+
+```{r}
+conn <- dbConnect(jdbcDriver, "jdbc:oracle:thin:@//localhost:1521/xe", "dokdok", "1234")
+```
+
+---
+## DB 연결 종료
+
+### `dbDisconnect(conn)`
+
+dbGetQuery(), dbSendQuery() 이용
+- 첫번째 매개변수로 DB 연결변수
+- 두번째 매개변수로 select 
+
+- `dbGetQuery()` return data.frame
+- 무조건 모든 데이터 가져와서 data.frame 만들기 때문에 만ㄴㅎ은 양의 데이터 검색된 경우 메모리 부족현상 일으킬 수 있다
+
+- `dbSendQuery()`
+- 데이터에 대한 포인터만 가져온 후 fetch(cursor, n = 1) 이용해 n 값에 데이터 갯수 대입해 필요한 만큼만 데이터 가져와서 data.frame 만들자
+- cursor : 데이터를 주고 다음으로 자동으로 넘어가는 특징, 전진만하기 때문에 한번 읽은 데이터를 다시 읽지 못함
+
+---
+
+```{r}
+result <- dbGetQuery(conn, "select * from TEST")
+head(result)
+```
+
+---
+## 관계도 만들기
+
+```{r}
+class(result)
+g <- graph.data.frame(result, directed = T)
+plot(g, layout = layout.fruchterman.reingold, vertex.size = 8, edge.array.size = 0.5)
+
+```
+
+---
+## `sqldf` : Oracle Query 실행을 위한 package
+
+```{r}
+library(sqldf)
+```
+
+```{r}
+head(iris)
+```
+
+---
+```{r}
+sqldf("select Species from iris")
+```
+---
+
+```{r}
+sqldf("select * from iris limit 4")
+```
+
+
+---
+### 조건문
+
+- R의 subset과 비교
+
+```{r}
+subset(iris, Species %in% c("setosa") )
+sqldf("select * from iris where Species in ('setosa')")
+```
+
+---
+##### column선택 위한 String 사용시 따옴표 반드시 큰 따옴표 사용(" ")
+
+```{r}
+subset(iris, Sepal.Length >= 5 & Sepal.Length <= 5.2 )
+sqldf('select * from iris where "Sepal.Length" between 5 and 6 ')
+```
+
+---
+### dataset
+
+금일 날씨 `xml` 데이터
+: http://www.kma.go.kr/weather/forecast/mid-term-xml.jsp?stnId=109
+
+
+`JSON` 샘플 데이터
+: https://api.github.com/users/hadley/repos
+
+---
+## XML Parsing
+
+- html parsing과 동일
+- xml은 엄격한 HTML, 태그 해석을 브라우저가 하지 않고 클라이언트가 직접한다는 점이 HTML과 다른 점
+- 모든 HTML parsing은 XML에 적용 가능
+- XML parsing 방법으로는 parsing하지 못하는 HTML이 있을 수도 있음
+
+---
+
+#### 1. 태그 내용 가져오기
+
+- URL주소를 문자열 변수에 할당
+
+```{r}
+library(rvest)
+url <- 'http://www.kma.go.kr/weather/forecast/mid-term-xml.jsp?stnId=109'
+
+weather <- read_html (url)
+head(weather)
+```
+
+- 필요한 데이터 parsing
+
+```{r}
+tmn <- weather %>% html_nodes("tmn") %>% html_text()
+head(tmn)
+```
+
+---
+## JSON Parsing
+
+- `fromJSON()` 함수에 URL 대입하면 data.frame으로 return
+
+```{r}
+# 필요한 packages load
+rm(list = ls())
+library(jsonlite)
+library(httr)
+```
+
+```{r}
+api <-  fromJSON("https://api.github.com/users/hadley/repos")
+head(api)
+```
+
+---

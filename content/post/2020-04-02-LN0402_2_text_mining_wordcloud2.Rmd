@@ -1,0 +1,393 @@
+---
+title: "Lecture 0403-2 Visualization Maps & Graphs with R"
+output: github_document
+toc : true
+toc_sticky : true
+always_allow_html: true
+categories:
+  - Study
+  - R
+tags:
+  - R
+  - bigdata
+  - LectureNotes
+  - visualizion
+  - graph
+  - basic statistics
+---
+
+# Visualization Maps
+
+## Choropleth Map
+
+- 지역별 통계치를 색깔 차이로 표현
+- 인구나 소득 같은 특성
+
+## 미국 주별 강력 범죄율 단계 구분도
+
+### import libraries
+
+```{r}
+library(devtools)
+# library(htmlwidgets)
+# library(htmltools)
+library(jsonlite)
+library(yaml)
+library(base64enc)
+library(tm)
+# library(wordcloud2)
+# library(ggplot2)
+library(tibble)
+
+# maps
+library(ggmap)
+library(ggiraph)
+library(mapproj)
+```
+
+##### `macOS Catalina` 이상에서는 `XQuartz` 문제로 `ggiraph` 에러날 수 있음
+
+이 경우 `XQuartz` 재설치 후 
+
+### USArrests 내장 dataset 확인
+
+```{r}
+str(USArrests)
+head(USArrests)
+```
+
+```{r}
+# View(USArrests)
+```
+
+
+### `rownames_to_column()` : set index as state & casting to dataframe
+
+```{r}
+crime <- rownames_to_column(USArrests, var = "state")
+crime$state <- tolower(crime$state)
+```
+
+
+### Library `tibble` 
+
+- `tibble` data : 행이름을 가질 수 있으나 연산자로 subset할 때 제거됨
+- `Null` 아닌 행이름을 tibble에 지정하려고 하면 `error`
+- 일반적으로 행이름은 다른 모들 열과 의미가 다른 문자열, 행이름 사용하지 않는 것이 가장 좋음
+- `tibble`사용시 데이터 프레임에 행이름 있는지 감지(`has_rownames()`) 또는 제거 (`remove_rownames()`), 명시적 열 사이에서 앞뒤 전환(`rownames_to_column()`, `column_to_rownames()`), `rowid_to_column()`
+- 1부터 시작해 순차적인 행 ID를 오름차순으로 하는 dataframe의 시작부분에 열추가, 기존 행 제거
+
+### 미국 주 지도 데이터
+
+```{r}
+usmap <- map_data("state")
+str(usmap)
+```
+
+
+### `ggChoropleth` : 단계 구분도
+
+```{r eval=FALSE}
+ggChoropleth(data = crime, 
+             aes(fill = Murder, map_id = state),  # state 에 따라 Murder 값 
+             map = usmap)
+```
+
+```{r eval=FALSE}
+# crime$UrbanPop
+ggChoropleth(data = crime, 
+             aes(fill = UrbanPop, map_id = state),  # state 에 따라 Murder 값 
+             map = usmap)
+```
+
+```{r eval=FALSE}
+ggChoropleth(data = crime, 
+             aes(fill = Rape, map_id = state),  # state 에 따라 Murder 값 
+             map = usmap,
+             interactive = T)
+```
+
+
+
+## 대한민국 시도별 인구, 결핵 환자 수 단계 구분도
+
+### import libraries
+
+```{r}
+library(stringi)
+library(devtools)
+
+# korea map
+devtools::install_github("cardiomoon/kormaps2014")
+library(kormaps2014)
+
+library(dplyr)
+```
+
+
+### 시도별 인구 데이터
+
+```{r}
+str(korpop1)
+```
+
+encoding error ??
+
+```{r}
+# str(changeCode(korpop1))
+```
+
+```{r}
+korpop1 <- rename(korpop1, pop = 총인구_명, name = 행정구역별_읍면동)
+```
+
+
+```{r eval=FALSE}
+ggChoropleth(data = korpop1, aes(fill = pop, map_id = code, tooltip = name), map = kormap1, interactive = T)
+```
+
+
+### 대한민국 시도별 결핵 환자 수 단계 구분도
+
+```{r}
+str(tbc)
+```
+
+
+```{r}
+str(changeCode(tbc))
+newtbc <- changeCode(tbc)
+```
+
+```{r eval=FALSE}
+ggChoropleth(data = tbc, aes (fill = NewPts, map_id = code, tooltip = name), map = kormap1, interactive = T)
+```
+
+
+## `plotly` Package - interactive graph
+
+- [plotly.com](https://plotly.com)
+- made by JavaScript
+
+
+```{r}
+library(plotly)
+```
+
+#### point chart
+
+```{r}
+p <- ggplot(data = mpg, aes(x = displ, y = hwy, col = drv)) + geom_point()
+p
+```
+
+```{r}
+ggplotly(p)
+```
+
+#### bar chart
+
+```{r}
+ggplotly( ggplot(data = diamonds, aes(x = cut, fill = clarity)) + geom_bar(position = "dodge") )
+```
+
+```{r}
+ggplotly( ggplot(data = diamonds, aes(x = cut, fill = clarity)) + geom_bar() )
+```
+
+## `dygraphs` Package : interactive time series graph
+
+```{r}
+library (dygraphs)
+```
+
+```{r}
+econo <- ggplot2::economics
+head(econo)
+```
+
+```{r}
+library(xts)
+eco <- xts(econo$unemploy, order.by = econo$date)
+head(eco)
+```
+
+```{r}
+dygraph(eco)
+```
+
+####`dyRangeSelector()`
+
+```{r}
+dygraph(eco) %>% dyRangeSelector()
+```
+
+#### multiple variables
+
+- save rate + unemployment rate
+
+```{r}
+eco_a <- xts(econo$psavert, order.by = econo$date)
+eco_b <- xts(econo$unemploy/1000 , order.by = econo$date)
+
+eco2 <- cbind(eco_a, eco_b)
+colnames(eco2) <- c("psavert", "unemploy")
+head(eco2)
+```
+
+```{r}
+dygraph(eco2) %>% dyRangeSelector()
+```
+
+
+# 통계 분석 기법을 이용한 가설 검정
+
+## 통계적 가설 검정
+
+- Descriptive statistics 기술 통계 : 데이터 요약 ; 지금까지 R을 통해서 본 내용
+- Inferential statistics 추론 통계 : 어떤 값이 발생할 확률 계산
+    - statistically significant : 차이가 우연히 나타날 확률이 적은 경우
+    - not statistically significant : 차이가 우연히 나타날 확률이 큰 경우
+    - 기술 통계 분석에서 집단 간 차이가 있는 것으로 나타나더라도 이는 우연에 의한 차이일 수 있음
+    -> 데이터를 이용해 신뢰할 수 있는 결론을 내려면 유의확률을 계산하는 통계적 가설 검정 절차를 거쳐야 함
+    
+### Statistical hypothesis test 통계적 가설 검정
+
+- 유의확률을 이용해 가설 검정
+- Significance probability, p-value : 유의확률
+    - 실제로는 집단 간 차이가 없는데 우연히 차이가 있는 데이터가 추출될 확률
+    - 분석 결과 유의확률이 크게 나타날 경우
+        - 집단 간 차이가 통계적으로 유의하지 않다고 해석
+        - 우연에 의한 관찰 결과일 가능성
+    - 분석 결과 유의확률이 적게 나타날 경우
+        - 집단 간 차이가 통계적으로 유의하다고 해석
+        - 우연으로 보기 힘들다
+
+### t-test ; 두집단 평균 비교
+
+- 두 집단의 평균에 유의미한 차이가 있는지
+
+
+### compact cars vs. suv cars
+
+#### import data set
+
+```{r}
+mpg <- as.data.frame(ggplot2::mpg)
+mpg_diff <- mpg %>% select(class, cty) %>% filter(class %in% c("compact", "suv"))
+head(mpg_diff)
+```
+
+```{r}
+table(mpg_diff$class)
+table(mpg_diff$cty)
+```
+
+
+#### t-test
+
+```{r}
+t.test(data=mpg_diff, cty ~ class, var.equal = T)
+```
+
+- alternative hypothesis 대립 가설 : 결과 값 != 0 이면 신뢰 가능
+- 95% 유효범위에서 p-value == 7.730139 - 5.525180 < 2.2e-16
+
+### regular oil vs premium oil
+
+```{r}
+mpg_diff2 <- mpg %>% select(fl, cty) %>% filter(fl %in% c("r", "p"))
+table(mpg_diff2$fl)
+```
+
+#### t-test
+
+```{r}
+t.test(data=mpg_diff2, cty ~ fl, var.equal = T)
+```
+
+- 평균 차이가 거의 나지 않음 -> 고급유라고 해서 시내주행 연비가 좋아지는 것이 아니다
+
+
+## Correlation Analysis 상관 분석
+
+- 두 변수가 서로 관련 있는지 검정
+- 상관계수 Correlation Coefficient
+    - 두 변수가 얼마나 관련 있는지, 관련성의 정도
+    - 절대값 0~1 사이 값, 1에 가까울수록 관련성 큼
+    - 상관계수가 양수면 정비례, 음수면 반비례
+    
+```{r}
+econo <- as.data.frame(ggplot2::economics)
+```
+
+
+### `cor.test()`
+
+numbers of unemploy - personal consumptions
+
+```{r}
+cor.test(econo$unemploy, econo$pce)
+```
+
+- correlation == 0.6145176 ; 어느정도 상관관계가 있음
+
+
+### Correlation Matrix Heatmap : 상관행렬 히트맵
+
+- Correlation Matrix : 다변수간 상관계수를 행렬로
+
+```{r}
+head(mtcars)
+```
+
+#### `cor()` : correlation matrix
+
+```{r}
+carcor <- cor(mtcars)
+# carcor
+round (carcor, 2)
+```
+
+#### `corrplot` Package : heat map
+
+```{r}
+library(corrplot)
+```
+
+```{r}
+corrplot(carcor)
+```
+
+```{r}
+corrplot(carcor, method = "pie")
+```
+
+```{r}
+corrplot(carcor, method = "number")
+```
+
+##### `colorRampPalette()` : color palette 만드는 함수
+
+```{r}
+col <- colorRampPalette(c("#BB4444", "#EE9988", "#FFFFFF", "#77AADD", "#4477AA"))
+
+corrplot(carcor, method = "square", 
+         # 색상 200개
+         col = col(200),
+         # type = "lower" 왼쪽 아래만 표시
+         type = "lower",
+         # 유사한 상관계수끼리 군집화
+         order = "hclust",
+         # 상관계수 색깔
+         addCoef.col = "black",
+         # 변수명 색깔
+         tl.col = "black",
+         # 변수명 45도 기울임
+         tl.srt = 30,
+         # 대각 행렬 제외
+         diag = F
+         )
+```
+
+

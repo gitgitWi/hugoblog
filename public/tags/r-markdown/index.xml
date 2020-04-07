@@ -1,25 +1,35 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>R Markdown on A Hugo website</title>
-    <link>/tags/r-markdown/</link>
-    <description>Recent content in R Markdown on A Hugo website</description>
+    <title>R Markdown on gitgitWi&#39;s blogdown pages</title>
+    <link>/blogdown/tags/r-markdown/</link>
+    <description>Recent content in R Markdown on gitgitWi&#39;s blogdown pages</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Thu, 23 Jul 2015 21:13:14 -0500</lastBuildDate>
+    <language>ko-KR</language>
+    <lastBuildDate>Tue, 07 Apr 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/tags/r-markdown/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/blogdown/tags/r-markdown/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Hello R Markdown</title>
-      <link>/2015/07/23/hello-r-markdown/</link>
-      <pubDate>Thu, 23 Jul 2015 21:13:14 -0500</pubDate>
+      <title>Create Blog Pages by R-Blogdown</title>
+      <link>/blogdown/2020/04/create-blog-pages-by-r-blogdown/</link>
+      <pubDate>Tue, 07 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>/2015/07/23/hello-r-markdown/</guid>
-      <description>R MarkdownThis is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.
-You can embed an R code chunk like this:
-summary(cars)## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 26.00 ## Median :15.0 Median : 36.00 ## Mean :15.4 Mean : 42.98 ## 3rd Qu.</description>
+      <guid>/blogdown/2020/04/create-blog-pages-by-r-blogdown/</guid>
+      <description>Necessary Packages  blogdown hugo  install.packages(&amp;quot;blogdown&amp;quot;)library(blogdown)blogdown::install_hugo()</description>
+    </item>
+    
+    <item>
+      <title>LN0407 R Markdown</title>
+      <link>/blogdown/2020/04/ln0407-r-markdown/</link>
+      <pubDate>Tue, 07 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/blogdown/2020/04/ln0407-r-markdown/</guid>
+      <description>Math LaTeX 사용방법 표준 LaTeX 수학 문법 이용해 작성
+참고 사이트 : https://www.codecogs.com/latex/eqneditor.php
+ 디스플레이 수식 :  \[ y_{i} = \sqrt[3]{x_{i}} + \sum_{1}^{n} \]
+ 인라인 수식 : 문장안에서 \(y_{i} = \sqrt[3]{x_{i}} + \sum_{1}^{n}\)와 같이 수식 입력    표 생성  기존 Markdown 방식  구분 | 내용 -|- 이름 | 이름이다 나이 | 1251 졸업연도 | 1923 입사연도 | 1332 설명 | 시간을 거스르는 자   구분 내용    이름 이름이다  나이 1251  졸업연도 1923  입사연도 1332  설명 시간을 거스르는 자     R Markdown  ex.</description>
     </item>
     
   </channel>

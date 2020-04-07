@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>conn to OracleDB, import XML/JSON files</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="gitgitWi" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# conn to OracleDB, import XML/JSON files
+## with R
+### gitgitWi
+### R Studio / Oracle
+### 2020/04/07 (updated: 2020-04-07)
+
+---
+
+
+---
+## R - Oracle Connection
+
+#### R에서 Oracle DB 이용해 데이터 가져오는 방법
+1. Java 기능 이용
+2. 순수 R package 이용
+
+- R에서는 `select` 구문 실행하는 경우 바로 data.frame으로 리턴
+- 관계형 DB 데이터 사용하는 것이 일반적인 프로그래밍 언어보다 편리
+
+---
+## DB 연결
+#### Necessary Libraries
+
+
+```r
+library(RJDBC)
+```
+
+```
+## Loading required package: DBI
+```
+
+```
+## Loading required package: rJava
+```
+
+```r
+library(rJava)
+library(igraph)
+```
+
+```
+## 
+## Attaching package: 'igraph'
+```
+
+```
+## The following objects are masked from 'package:stats':
+## 
+##     decompose, spectrum
+```
+
+```
+## The following object is masked from 'package:base':
+## 
+##     union
+```
+
+---
+
+
+```r
+jdbcDriver &lt;- JDBC(driverClass = "oracle.jdbc.OracleDriver", classPath = "/Users/WnJ/Desktop/johnwi_KNOU/Programming/DB/oracle/ojdbc6.jar")
+```
+
+
+
+```r
+conn &lt;- dbConnect(jdbcDriver, "jdbc:oracle:thin:@//localhost:1521/xe", "dokdok", "1234")
+```
+
+---
+## DB 연결 종료
+
+### `dbDisconnect(conn)`
+
+dbGetQuery(), dbSendQuery() 이용
+- 첫번째 매개변수로 DB 연결변수
+- 두번째 매개변수로 select 
+
+- `dbGetQuery()` return data.frame
+- 무조건 모든 데이터 가져와서 data.frame 만들기 때문에 만ㄴㅎ은 양의 데이터 검색된 경우 메모리 부족현상 일으킬 수 있다
+
+- `dbSendQuery()`
+- 데이터에 대한 포인터만 가져온 후 fetch(cursor, n = 1) 이용해 n 값에 데이터 갯수 대입해 필요한 만큼만 데이터 가져와서 data.frame 만들자
+- cursor : 데이터를 주고 다음으로 자동으로 넘어가는 특징, 전진만하기 때문에 한번 읽은 데이터를 다시 읽지 못함
+
+---
+
+
+```r
+result &lt;- dbGetQuery(conn, "select * from TEST")
+head(result)
+```
+
+```
+##   NAME         PHONE
+## 1 test 010-1234-1234
+```
+
+---
+## 관계도 만들기
+
+
+```r
+class(result)
+```
+
+```
+## [1] "data.frame"
+```
+
+```r
+g &lt;- graph.data.frame(result, directed = T)
+plot(g, layout = layout.fruchterman.reingold, vertex.size = 8, edge.array.size = 0.5)
+```
+
+![](2020-04-07-LN0407_Connect_Oracle_DB_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
+
+---
+## `sqldf` : Oracle Query 실행을 위한 package
+
+
+```r
+library(sqldf)
+```
+
+```
+## Loading required package: gsubfn
+```
+
+```
+## Loading required package: proto
+```
+
+```
+## Loading required package: RSQLite
+```
+
+
+```r
+head(iris)
+```
+
+```
+##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+## 1          5.1         3.5          1.4         0.2  setosa
+## 2          4.9         3.0          1.4         0.2  setosa
+## 3          4.7         3.2          1.3         0.2  setosa
+## 4          4.6         3.1          1.5         0.2  setosa
+## 5          5.0         3.6          1.4         0.2  setosa
+## 6          5.4         3.9          1.7         0.4  setosa
+```
+
+---
+
+```r
+sqldf("select Species from iris")
+```
+
+```
+##        Species
+## 1       setosa
+## 2       setosa
+## 3       setosa
+## 4       setosa
+## 5       setosa
+## 6       setosa
+## 7       setosa
+## 8       setosa
+## 9       setosa
+## 10      setosa
+## 11      setosa
+## 12      setosa
+## 13      setosa
+## 14      setosa
+## 15      setosa
+## 16      setosa
+## 17      setosa
+## 18      setosa
+## 19      setosa
+## 20      setosa
+## 21      setosa
+## 22      setosa
+## 23      setosa
+## 24      setosa
+## 25      setosa
+## 26      setosa
+## 27      setosa
+## 28      setosa
+## 29      setosa
+## 30      setosa
+## 31      setosa
+## 32      setosa
+## 33      setosa
+## 34      setosa
+## 35      setosa
+## 36      setosa
+## 37      setosa
+## 38      setosa
+## 39      setosa
+## 40      setosa
+## 41      setosa
+## 42      setosa
+## 43      setosa
+## 44      setosa
+## 45      setosa
+## 46      setosa
+## 47      setosa
+## 48      setosa
+## 49      setosa
+## 50      setosa
+## 51  versicolor
+## 52  versicolor
+## 53  versicolor
+## 54  versicolor
+## 55  versicolor
+## 56  versicolor
+## 57  versicolor
+## 58  versicolor
+## 59  versicolor
+## 60  versicolor
+## 61  versicolor
+## 62  versicolor
+## 63  versicolor
+## 64  versicolor
+## 65  versicolor
+## 66  versicolor
+## 67  versicolor
+## 68  versicolor
+## 69  versicolor
+## 70  versicolor
+## 71  versicolor
+## 72  versicolor
+## 73  versicolor
+## 74  versicolor
+## 75  versicolor
+## 76  versicolor
+## 77  versicolor
+## 78  versicolor
+## 79  versicolor
+## 80  versicolor
+## 81  versicolor
+## 82  versicolor
+## 83  versicolor
+## 84  versicolor
+## 85  versicolor
+## 86  versicolor
+## 87  versicolor
+## 88  versicolor
+## 89  versicolor
+## 90  versicolor
+## 91  versicolor
+## 92  versicolor
+## 93  versicolor
+## 94  versicolor
+## 95  versicolor
+## 96  versicolor
+## 97  versicolor
+## 98  versicolor
+## 99  versicolor
+## 100 versicolor
+## 101  virginica
+## 102  virginica
+## 103  virginica
+## 104  virginica
+## 105  virginica
+## 106  virginica
+## 107  virginica
+## 108  virginica
+## 109  virginica
+## 110  virginica
+## 111  virginica
+## 112  virginica
+## 113  virginica
+## 114  virginica
+## 115  virginica
+## 116  virginica
+## 117  virginica
+## 118  virginica
+## 119  virginica
+## 120  virginica
+## 121  virginica
+## 122  virginica
+## 123  virginica
+## 124  virginica
+## 125  virginica
+## 126  virginica
+## 127  virginica
+## 128  virginica
+## 129  virginica
+## 130  virginica
+## 131  virginica
+## 132  virginica
+## 133  virginica
+## 134  virginica
+## 135  virginica
+## 136  virginica
+## 137  virginica
+## 138  virginica
+## 139  virginica
+## 140  virginica
+## 141  virginica
+## 142  virginica
+## 143  virginica
+## 144  virginica
+## 145  virginica
+## 146  virginica
+## 147  virginica
+## 148  virginica
+## 149  virginica
+## 150  virginica
+```
+---
+
+
+```r
+sqldf("select * from iris limit 4")
+```
+
+```
+##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+## 1          5.1         3.5          1.4         0.2  setosa
+## 2          4.9         3.0          1.4         0.2  setosa
+## 3          4.7         3.2          1.3         0.2  setosa
+## 4          4.6         3.1          1.5         0.2  setosa
+```
+
+
+---
+### 조건문
+
+- R의 subset과 비교
+
+
+```r
+subset(iris, Species %in% c("setosa") )
+```
+
+```
+##    Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+## 1           5.1         3.5          1.4         0.2  setosa
+## 2           4.9         3.0          1.4         0.2  setosa
+## 3           4.7         3.2          1.3         0.2  setosa
+## 4           4.6         3.1          1.5         0.2  setosa
+## 5           5.0         3.6          1.4         0.2  setosa
+## 6           5.4         3.9          1.7         0.4  setosa
+## 7           4.6         3.4          1.4         0.3  setosa
+## 8           5.0         3.4          1.5         0.2  setosa
+## 9           4.4         2.9          1.4         0.2  setosa
+## 10          4.9         3.1          1.5         0.1  setosa
+## 11          5.4         3.7          1.5         0.2  setosa
+## 12          4.8         3.4          1.6         0.2  setosa
+## 13          4.8         3.0          1.4         0.1  setosa
+## 14          4.3         3.0          1.1         0.1  setosa
+## 15          5.8         4.0          1.2         0.2  setosa
+## 16          5.7         4.4          1.5         0.4  setosa
+## 17          5.4         3.9          1.3         0.4  setosa
+## 18          5.1         3.5          1.4         0.3  setosa
+## 19          5.7         3.8          1.7         0.3  setosa
+## 20          5.1         3.8          1.5         0.3  setosa
+## 21          5.4         3.4          1.7         0.2  setosa
+## 22          5.1         3.7          1.5         0.4  setosa
+## 23          4.6         3.6          1.0         0.2  setosa
+## 24          5.1         3.3          1.7         0.5  setosa
+## 25          4.8         3.4          1.9         0.2  setosa
+## 26          5.0         3.0          1.6         0.2  setosa
+## 27          5.0         3.4          1.6         0.4  setosa
+## 28          5.2         3.5          1.5         0.2  setosa
+## 29          5.2         3.4          1.4         0.2  setosa
+## 30          4.7         3.2          1.6         0.2  setosa
+## 31          4.8         3.1          1.6         0.2  setosa
+## 32          5.4         3.4          1.5         0.4  setosa
+## 33          5.2         4.1          1.5         0.1  setosa
+## 34          5.5         4.2          1.4         0.2  setosa
+## 35          4.9         3.1          1.5         0.2  setosa
+## 36          5.0         3.2          1.2         0.2  setosa
+## 37          5.5         3.5          1.3         0.2  setosa
+## 38          4.9         3.6          1.4         0.1  setosa
+## 39          4.4         3.0          1.3         0.2  setosa
+## 40          5.1         3.4          1.5         0.2  setosa
+## 41          5.0         3.5          1.3         0.3  setosa
+## 42          4.5         2.3          1.3         0.3  setosa
+## 43          4.4         3.2          1.3         0.2  setosa
+## 44          5.0         3.5          1.6         0.6  setosa
+## 45          5.1         3.8          1.9         0.4  setosa
+## 46          4.8         3.0          1.4         0.3  setosa
+## 47          5.1         3.8          1.6         0.2  setosa
+## 48          4.6         3.2          1.4         0.2  setosa
+## 49          5.3         3.7          1.5         0.2  setosa
+## 50          5.0         3.3          1.4         0.2  setosa
+```
+
+```r
+sqldf("select * from iris where Species in ('setosa')")
+```
+
+```
+##    Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+## 1           5.1         3.5          1.4         0.2  setosa
+## 2           4.9         3.0          1.4         0.2  setosa
+## 3           4.7         3.2          1.3         0.2  setosa
+## 4           4.6         3.1          1.5         0.2  setosa
+## 5           5.0         3.6          1.4         0.2  setosa
+## 6           5.4         3.9          1.7         0.4  setosa
+## 7           4.6         3.4          1.4         0.3  setosa
+## 8           5.0         3.4          1.5         0.2  setosa
+## 9           4.4         2.9          1.4         0.2  setosa
+## 10          4.9         3.1          1.5         0.1  setosa
+## 11          5.4         3.7          1.5         0.2  setosa
+## 12          4.8         3.4          1.6         0.2  setosa
+## 13          4.8         3.0          1.4         0.1  setosa
+## 14          4.3         3.0          1.1         0.1  setosa
+## 15          5.8         4.0          1.2         0.2  setosa
+## 16          5.7         4.4          1.5         0.4  setosa
+## 17          5.4         3.9          1.3         0.4  setosa
+## 18          5.1         3.5          1.4         0.3  setosa
+## 19          5.7         3.8          1.7         0.3  setosa
+## 20          5.1         3.8          1.5         0.3  setosa
+## 21          5.4         3.4          1.7         0.2  setosa
+## 22          5.1         3.7          1.5         0.4  setosa
+## 23          4.6         3.6          1.0         0.2  setosa
+## 24          5.1         3.3          1.7         0.5  setosa
+## 25          4.8         3.4          1.9         0.2  setosa
+## 26          5.0         3.0          1.6         0.2  setosa
+## 27          5.0         3.4          1.6         0.4  setosa
+## 28          5.2         3.5          1.5         0.2  setosa
+## 29          5.2         3.4          1.4         0.2  setosa
+## 30          4.7         3.2          1.6         0.2  setosa
+## 31          4.8         3.1          1.6         0.2  setosa
+## 32          5.4         3.4          1.5         0.4  setosa
+## 33          5.2         4.1          1.5         0.1  setosa
+## 34          5.5         4.2          1.4         0.2  setosa
+## 35          4.9         3.1          1.5         0.2  setosa
+## 36          5.0         3.2          1.2         0.2  setosa
+## 37          5.5         3.5          1.3         0.2  setosa
+## 38          4.9         3.6          1.4         0.1  setosa
+## 39          4.4         3.0          1.3         0.2  setosa
+## 40          5.1         3.4          1.5         0.2  setosa
+## 41          5.0         3.5          1.3         0.3  setosa
+## 42          4.5         2.3          1.3         0.3  setosa
+## 43          4.4         3.2          1.3         0.2  setosa
+## 44          5.0         3.5          1.6         0.6  setosa
+## 45          5.1         3.8          1.9         0.4  setosa
+## 46          4.8         3.0          1.4         0.3  setosa
+## 47          5.1         3.8          1.6         0.2  setosa
+## 48          4.6         3.2          1.4         0.2  setosa
+## 49          5.3         3.7          1.5         0.2  setosa
+## 50          5.0         3.3          1.4         0.2  setosa
+```
+
+---
+##### column선택 위한 String 사용시 따옴표 반드시 큰 따옴표 사용(" ")
+
+
+```r
+subset(iris, Sepal.Length &gt;= 5 &amp; Sepal.Length &lt;= 5.2 )
+```
+
+```
+##    Sepal.Length Sepal.Width Petal.Length Petal.Width    Species
+## 1           5.1         3.5          1.4         0.2     setosa
+## 5           5.0         3.6          1.4         0.2     setosa
+## 8           5.0         3.4          1.5         0.2     setosa
+## 18          5.1         3.5          1.4         0.3     setosa
+## 20          5.1         3.8          1.5         0.3     setosa
+## 22          5.1         3.7          1.5         0.4     setosa
+## 24          5.1         3.3          1.7         0.5     setosa
+## 26          5.0         3.0          1.6         0.2     setosa
+## 27          5.0         3.4          1.6         0.4     setosa
+## 28          5.2         3.5          1.5         0.2     setosa
+## 29          5.2         3.4          1.4         0.2     setosa
+## 33          5.2         4.1          1.5         0.1     setosa
+## 36          5.0         3.2          1.2         0.2     setosa
+## 40          5.1         3.4          1.5         0.2     setosa
+## 41          5.0         3.5          1.3         0.3     setosa
+## 44          5.0         3.5          1.6         0.6     setosa
+## 45          5.1         3.8          1.9         0.4     setosa
+## 47          5.1         3.8          1.6         0.2     setosa
+## 50          5.0         3.3          1.4         0.2     setosa
+## 60          5.2         2.7          3.9         1.4 versicolor
+## 61          5.0         2.0          3.5         1.0 versicolor
+## 94          5.0         2.3          3.3         1.0 versicolor
+## 99          5.1         2.5          3.0         1.1 versicolor
+```
+
+```r
+sqldf('select * from iris where "Sepal.Length" between 5 and 6 ')
+```
+
+```
+##    Sepal.Length Sepal.Width Petal.Length Petal.Width    Species
+## 1           5.1         3.5          1.4         0.2     setosa
+## 2           5.0         3.6          1.4         0.2     setosa
+## 3           5.4         3.9          1.7         0.4     setosa
+## 4           5.0         3.4          1.5         0.2     setosa
+## 5           5.4         3.7          1.5         0.2     setosa
+## 6           5.8         4.0          1.2         0.2     setosa
+## 7           5.7         4.4          1.5         0.4     setosa
+## 8           5.4         3.9          1.3         0.4     setosa
+## 9           5.1         3.5          1.4         0.3     setosa
+## 10          5.7         3.8          1.7         0.3     setosa
+## 11          5.1         3.8          1.5         0.3     setosa
+## 12          5.4         3.4          1.7         0.2     setosa
+## 13          5.1         3.7          1.5         0.4     setosa
+## 14          5.1         3.3          1.7         0.5     setosa
+## 15          5.0         3.0          1.6         0.2     setosa
+## 16          5.0         3.4          1.6         0.4     setosa
+## 17          5.2         3.5          1.5         0.2     setosa
+## 18          5.2         3.4          1.4         0.2     setosa
+## 19          5.4         3.4          1.5         0.4     setosa
+## 20          5.2         4.1          1.5         0.1     setosa
+## 21          5.5         4.2          1.4         0.2     setosa
+## 22          5.0         3.2          1.2         0.2     setosa
+## 23          5.5         3.5          1.3         0.2     setosa
+## 24          5.1         3.4          1.5         0.2     setosa
+## 25          5.0         3.5          1.3         0.3     setosa
+## 26          5.0         3.5          1.6         0.6     setosa
+## 27          5.1         3.8          1.9         0.4     setosa
+## 28          5.1         3.8          1.6         0.2     setosa
+## 29          5.3         3.7          1.5         0.2     setosa
+## 30          5.0         3.3          1.4         0.2     setosa
+## 31          5.5         2.3          4.0         1.3 versicolor
+## 32          5.7         2.8          4.5         1.3 versicolor
+## 33          5.2         2.7          3.9         1.4 versicolor
+## 34          5.0         2.0          3.5         1.0 versicolor
+## 35          5.9         3.0          4.2         1.5 versicolor
+## 36          6.0         2.2          4.0         1.0 versicolor
+## 37          5.6         2.9          3.6         1.3 versicolor
+## 38          5.6         3.0          4.5         1.5 versicolor
+## 39          5.8         2.7          4.1         1.0 versicolor
+## 40          5.6         2.5          3.9         1.1 versicolor
+## 41          5.9         3.2          4.8         1.8 versicolor
+## 42          6.0         2.9          4.5         1.5 versicolor
+## 43          5.7         2.6          3.5         1.0 versicolor
+## 44          5.5         2.4          3.8         1.1 versicolor
+## 45          5.5         2.4          3.7         1.0 versicolor
+## 46          5.8         2.7          3.9         1.2 versicolor
+## 47          6.0         2.7          5.1         1.6 versicolor
+## 48          5.4         3.0          4.5         1.5 versicolor
+## 49          6.0         3.4          4.5         1.6 versicolor
+## 50          5.6         3.0          4.1         1.3 versicolor
+## 51          5.5         2.5          4.0         1.3 versicolor
+## 52          5.5         2.6          4.4         1.2 versicolor
+## 53          5.8         2.6          4.0         1.2 versicolor
+## 54          5.0         2.3          3.3         1.0 versicolor
+## 55          5.6         2.7          4.2         1.3 versicolor
+## 56          5.7         3.0          4.2         1.2 versicolor
+## 57          5.7         2.9          4.2         1.3 versicolor
+## 58          5.1         2.5          3.0         1.1 versicolor
+## 59          5.7         2.8          4.1         1.3 versicolor
+## 60          5.8         2.7          5.1         1.9  virginica
+## 61          5.7         2.5          5.0         2.0  virginica
+## 62          5.8         2.8          5.1         2.4  virginica
+## 63          6.0         2.2          5.0         1.5  virginica
+## 64          5.6         2.8          4.9         2.0  virginica
+## 65          6.0         3.0          4.8         1.8  virginica
+## 66          5.8         2.7          5.1         1.9  virginica
+## 67          5.9         3.0          5.1         1.8  virginica
+```
+
+---
+### dataset
+
+금일 날씨 `xml` 데이터
+: http://www.kma.go.kr/weather/forecast/mid-term-xml.jsp?stnId=109
+
+
+`JSON` 샘플 데이터
+: https://api.github.com/users/hadley/repos
+
+---
+## XML Parsing
+
+- html parsing과 동일
+- xml은 엄격한 HTML, 태그 해석을 브라우저가 하지 않고 클라이언트가 직접한다는 점이 HTML과 다른 점
+- 모든 HTML parsing은 XML에 적용 가능
+- XML parsing 방법으로는 parsing하지 못하는 HTML이 있을 수도 있음
+
+---
+
+#### 1. 태그 내용 가져오기
+
+- URL주소를 문자열 변수에 할당
+
+
+```r
+library(rvest)
+```
+
+```
+## Loading required package: xml2
+```
+
+```r
+url &lt;- 'http://www.kma.go.kr/weather/forecast/mid-term-xml.jsp?stnId=109'
+
+weather &lt;- read_html (url)
+head(weather)
+```
+
+```
+## $node
+## &lt;pointer: 0x7fb8bb7e8a70&gt;
+## 
+## $doc
+## &lt;pointer: 0x7fb8bb7ea8e0&gt;
+```
+
+- 필요한 데이터 parsing
+
+
+```r
+tmn &lt;- weather %&gt;% html_nodes("tmn") %&gt;% html_text()
+head(tmn)
+```
+
+```
+## [1] "6" "6" "7" "7" "8" "8"
+```
+
+---
+## JSON Parsing
+
+- `fromJSON()` 함수에 URL 대입하면 data.frame으로 return
+
+
+```r
+# 필요한 packages load
+rm(list = ls())
+library(jsonlite)
+library(httr)
+```
+
+
+```r
+api &lt;-  fromJSON("https://api.github.com/users/hadley/repos")
+head(api)
+```
+
+```
+##          id                          node_id                  name
+## 1  40423928 MDEwOlJlcG9zaXRvcnk0MDQyMzkyOA== 15-state-of-the-union
+## 2  40544418 MDEwOlJlcG9zaXRvcnk0MDU0NDQxOA==     15-student-papers
+## 3  14984909 MDEwOlJlcG9zaXRvcnkxNDk4NDkwOQ==              500lines
+## 4  12241750 MDEwOlJlcG9zaXRvcnkxMjI0MTc1MA==                 adv-r
+## 5   5154874     MDEwOlJlcG9zaXRvcnk1MTU0ODc0               appdirs
+## 6 235426319 MDEwOlJlcG9zaXRvcnkyMzU0MjYzMTk=                 arrow
+##                      full_name private owner.login owner.id    owner.node_id
+## 1 hadley/15-state-of-the-union   FALSE      hadley     4196 MDQ6VXNlcjQxOTY=
+## 2     hadley/15-student-papers   FALSE      hadley     4196 MDQ6VXNlcjQxOTY=
+## 3              hadley/500lines   FALSE      hadley     4196 MDQ6VXNlcjQxOTY=
+## 4                 hadley/adv-r   FALSE      hadley     4196 MDQ6VXNlcjQxOTY=
+## 5               hadley/appdirs   FALSE      hadley     4196 MDQ6VXNlcjQxOTY=
+## 6                 hadley/arrow   FALSE      hadley     4196 MDQ6VXNlcjQxOTY=
+##                                    owner.avatar_url owner.gravatar_id
+## 1 https://avatars3.githubusercontent.com/u/4196?v=4                  
+## 2 https://avatars3.githubusercontent.com/u/4196?v=4                  
+## 3 https://avatars3.githubusercontent.com/u/4196?v=4                  
+## 4 https://avatars3.githubusercontent.com/u/4196?v=4                  
+## 5 https://avatars3.githubusercontent.com/u/4196?v=4                  
+## 6 https://avatars3.githubusercontent.com/u/4196?v=4                  
+##                             owner.url            owner.html_url
+## 1 https://api.github.com/users/hadley https://github.com/hadley
+## 2 https://api.github.com/users/hadley https://github.com/hadley
+## 3 https://api.github.com/users/hadley https://github.com/hadley
+## 4 https://api.github.com/users/hadley https://github.com/hadley
+## 5 https://api.github.com/users/hadley https://github.com/hadley
+## 6 https://api.github.com/users/hadley https://github.com/hadley
+##                             owner.followers_url
+## 1 https://api.github.com/users/hadley/followers
+## 2 https://api.github.com/users/hadley/followers
+## 3 https://api.github.com/users/hadley/followers
+## 4 https://api.github.com/users/hadley/followers
+## 5 https://api.github.com/users/hadley/followers
+## 6 https://api.github.com/users/hadley/followers
+##                                          owner.following_url
+## 1 https://api.github.com/users/hadley/following{/other_user}
+## 2 https://api.github.com/users/hadley/following{/other_user}
+## 3 https://api.github.com/users/hadley/following{/other_user}
+## 4 https://api.github.com/users/hadley/following{/other_user}
+## 5 https://api.github.com/users/hadley/following{/other_user}
+## 6 https://api.github.com/users/hadley/following{/other_user}
+##                                       owner.gists_url
+## 1 https://api.github.com/users/hadley/gists{/gist_id}
+## 2 https://api.github.com/users/hadley/gists{/gist_id}
+## 3 https://api.github.com/users/hadley/gists{/gist_id}
+## 4 https://api.github.com/users/hadley/gists{/gist_id}
+## 5 https://api.github.com/users/hadley/gists{/gist_id}
+## 6 https://api.github.com/users/hadley/gists{/gist_id}
+##                                            owner.starred_url
+## 1 https://api.github.com/users/hadley/starred{/owner}{/repo}
+## 2 https://api.github.com/users/hadley/starred{/owner}{/repo}
+## 3 https://api.github.com/users/hadley/starred{/owner}{/repo}
+## 4 https://api.github.com/users/hadley/starred{/owner}{/repo}
+## 5 https://api.github.com/users/hadley/starred{/owner}{/repo}
+## 6 https://api.github.com/users/hadley/starred{/owner}{/repo}
+##                             owner.subscriptions_url
+## 1 https://api.github.com/users/hadley/subscriptions
+## 2 https://api.github.com/users/hadley/subscriptions
+## 3 https://api.github.com/users/hadley/subscriptions
+## 4 https://api.github.com/users/hadley/subscriptions
+## 5 https://api.github.com/users/hadley/subscriptions
+## 6 https://api.github.com/users/hadley/subscriptions
+##                    owner.organizations_url
+## 1 https://api.github.com/users/hadley/orgs
+## 2 https://api.github.com/users/hadley/orgs
+## 3 https://api.github.com/users/hadley/orgs
+## 4 https://api.github.com/users/hadley/orgs
+## 5 https://api.github.com/users/hadley/orgs
+## 6 https://api.github.com/users/hadley/orgs
+##                             owner.repos_url
+## 1 https://api.github.com/users/hadley/repos
+## 2 https://api.github.com/users/hadley/repos
+## 3 https://api.github.com/users/hadley/repos
+## 4 https://api.github.com/users/hadley/repos
+## 5 https://api.github.com/users/hadley/repos
+## 6 https://api.github.com/users/hadley/repos
+##                                       owner.events_url
+## 1 https://api.github.com/users/hadley/events{/privacy}
+## 2 https://api.github.com/users/hadley/events{/privacy}
+## 3 https://api.github.com/users/hadley/events{/privacy}
+## 4 https://api.github.com/users/hadley/events{/privacy}
+## 5 https://api.github.com/users/hadley/events{/privacy}
+## 6 https://api.github.com/users/hadley/events{/privacy}
+##                             owner.received_events_url owner.type
+## 1 https://api.github.com/users/hadley/received_events       User
+## 2 https://api.github.com/users/hadley/received_events       User
+## 3 https://api.github.com/users/hadley/received_events       User
+## 4 https://api.github.com/users/hadley/received_events       User
+## 5 https://api.github.com/users/hadley/received_events       User
+## 6 https://api.github.com/users/hadley/received_events       User
+##   owner.site_admin                                        html_url
+## 1            FALSE https://github.com/hadley/15-state-of-the-union
+## 2            FALSE     https://github.com/hadley/15-student-papers
+## 3            FALSE              https://github.com/hadley/500lines
+## 4            FALSE                 https://github.com/hadley/adv-r
+## 5            FALSE               https://github.com/hadley/appdirs
+## 6            FALSE                 https://github.com/hadley/arrow
+##                                                                                                                                                                                                                                                                                                                                                                                                                                      description
+## 1                                                                                                                                                                                                                                                                                                                                                                                                                                           &lt;NA&gt;
+## 2                                                                                                                                                                                                                                                                                                                                                                                          Graphics &amp; computing student paper winners @ JSM 2015
+## 3                                                                                                                                                                                                                                                                                                                                                                                                                              500 Lines or Less
+## 4                                                                                                                                                                                                                                                                                                                                                                                                                             Advanced R: a book
+## 5                                                                                                                                                                                                                                                                                                                                              A small Python module for determining appropriate platform-specific dirs, e.g. a "user data dir".
+## 6 Apache Arrow is a cross-language development platform for in-memory data. It specifies a standardized language-independent columnar memory format for flat and hierarchical data, organized for efficient analytic operations on modern hardware. It also provides computational libraries and zero-copy streaming messaging and interprocess communication. Languages currently supported include C, C++, Java, JavaScript, Python, and Ruby.
+##    fork                                                       url
+## 1 FALSE https://api.github.com/repos/hadley/15-state-of-the-union
+## 2 FALSE     https://api.github.com/repos/hadley/15-student-papers
+## 3  TRUE              https://api.github.com/repos/hadley/500lines
+## 4 FALSE                 https://api.github.com/repos/hadley/adv-r
+## 5  TRUE               https://api.github.com/repos/hadley/appdirs
+## 6  TRUE                 https://api.github.com/repos/hadley/arrow
+##                                                         forks_url
+## 1 https://api.github.com/repos/hadley/15-state-of-the-union/forks
+## 2     https://api.github.com/repos/hadley/15-student-papers/forks
+## 3              https://api.github.com/repos/hadley/500lines/forks
+## 4                 https://api.github.com/repos/hadley/adv-r/forks
+## 5               https://api.github.com/repos/hadley/appdirs/forks
+## 6                 https://api.github.com/repos/hadley/arrow/forks
+##                                                                  keys_url
+## 1 https://api.github.com/repos/hadley/15-state-of-the-union/keys{/key_id}
+## 2     https://api.github.com/repos/hadley/15-student-papers/keys{/key_id}
+## 3              https://api.github.com/repos/hadley/500lines/keys{/key_id}
+## 4                 https://api.github.com/repos/hadley/adv-r/keys{/key_id}
+## 5               https://api.github.com/repos/hadley/appdirs/keys{/key_id}
+## 6                 https://api.github.com/repos/hadley/arrow/keys{/key_id}
+##                                                                        collaborators_url
+## 1 https://api.github.com/repos/hadley/15-state-of-the-union/collaborators{/collaborator}
+## 2     https://api.github.com/repos/hadley/15-student-papers/collaborators{/collaborator}
+## 3              https://api.github.com/repos/hadley/500lines/collaborators{/collaborator}
+## 4                 https://api.github.com/repos/hadley/adv-r/collaborators{/collaborator}
+## 5               https://api.github.com/repos/hadley/appdirs/collaborators{/collaborator}
+## 6                 https://api.github.com/repos/hadley/arrow/collaborators{/collaborator}
+##                                                         teams_url
+## 1 https://api.github.com/repos/hadley/15-state-of-the-union/teams
+## 2     https://api.github.com/repos/hadley/15-student-papers/teams
+## 3              https://api.github.com/repos/hadley/500lines/teams
+## 4                 https://api.github.com/repos/hadley/adv-r/teams
+## 5               https://api.github.com/repos/hadley/appdirs/teams
+## 6                 https://api.github.com/repos/hadley/arrow/teams
+##                                                         hooks_url
+## 1 https://api.github.com/repos/hadley/15-state-of-the-union/hooks
+## 2     https://api.github.com/repos/hadley/15-student-papers/hooks
+## 3              https://api.github.com/repos/hadley/500lines/hooks
+## 4                 https://api.github.com/repos/hadley/adv-r/hooks
+## 5               https://api.github.com/repos/hadley/appdirs/hooks
+## 6                 https://api.github.com/repos/hadley/arrow/hooks
+##                                                                   issue_events_url
+## 1 https://api.github.com/repos/hadley/15-state-of-the-union/issues/events{/number}
+## 2     https://api.github.com/repos/hadley/15-student-papers/issues/events{/number}
+## 3              https://api.github.com/repos/hadley/500lines/issues/events{/number}
+## 4                 https://api.github.com/repos/hadley/adv-r/issues/events{/number}
+## 5               https://api.github.com/repos/hadley/appdirs/issues/events{/number}
+## 6                 https://api.github.com/repos/hadley/arrow/issues/events{/number}
+##                                                         events_url
+## 1 https://api.github.com/repos/hadley/15-state-of-the-union/events
+## 2     https://api.github.com/repos/hadley/15-student-papers/events
+## 3              https://api.github.com/repos/hadley/500lines/events
+## 4                 https://api.github.com/repos/hadley/adv-r/events
+## 5               https://api.github.com/repos/hadley/appdirs/events
+## 6                 https://api.github.com/repos/hadley/arrow/events
+##                                                                assignees_url
+## 1 https://api.github.com/repos/hadley/15-state-of-the-union/assignees{/user}
+## 2     https://api.github.com/repos/hadley/15-student-papers/assignees{/user}
+## 3              https://api.github.com/repos/hadley/500lines/assignees{/user}
+## 4                 https://api.github.com/repos/hadley/adv-r/assignees{/user}
+## 5               https://api.github.com/repos/hadley/appdirs/assignees{/user}
+## 6                 https://api.github.com/repos/hadley/arrow/assignees{/user}
+##                                                                  branches_url
+## 1 https://api.github.com/repos/hadley/15-state-of-the-union/branches{/branch}
+## 2     https://api.github.com/repos/hadley/15-student-papers/branches{/branch}
+## 3              https://api.github.com/repos/hadley/500lines/branches{/branch}
+## 4                 https://api.github.com/repos/hadley/adv-r/branches{/branch}
+## 5               https://api.github.com/repos/hadley/appdirs/branches{/branch}
+## 6                 https://api.github.com/repos/hadley/arrow/branches{/branch}
+##                                                         tags_url
+## 1 https://api.github.com/repos/hadley/15-state-of-the-union/tags
+## 2     https://api.github.com/repos/hadley/15-student-papers/tags
+## 3              https://api.github.com/repos/hadley/500lines/tags
+## 4                 https://api.github.com/repos/hadley/adv-r/tags
+## 5               https://api.github.com/repos/hadley/appdirs/tags
+## 6                 https://api.github.com/repos/hadley/arrow/tags
+##                                                                   blobs_url
+## 1 https://api.github.com/repos/hadley/15-state-of-the-union/git/blobs{/sha}
+## 2     https://api.github.com/repos/hadley/15-student-papers/git/blobs{/sha}
+## 3              https://api.github.com/repos/hadley/500lines/git/blobs{/sha}
+## 4                 https://api.github.com/repos/hadley/adv-r/git/blobs{/sha}
+## 5               https://api.github.com/repos/hadley/appdirs/git/blobs{/sha}
+## 6                 https://api.github.com/repos/hadley/arrow/git/blobs{/sha}
+##                                                               git_tags_url
+## 1 https://api.github.com/repos/hadley/15-state-of-the-union/git/tags{/sha}
+## 2     https://api.github.com/repos/hadley/15-student-papers/git/tags{/sha}
+## 3              https://api.github.com/repos/hadley/500lines/git/tags{/sha}
+## 4                 https://api.github.com/repos/hadley/adv-r/git/tags{/sha}
+## 5               https://api.github.com/repos/hadley/appdirs/git/tags{/sha}
+## 6                 https://api.github.com/repos/hadley/arrow/git/tags{/sha}
+##                                                               git_refs_url
+## 1 https://api.github.com/repos/hadley/15-state-of-the-union/git/refs{/sha}
+## 2     https://api.github.com/repos/hadley/15-student-papers/git/refs{/sha}
+## 3              https://api.github.com/repos/hadley/500lines/git/refs{/sha}
+## 4                 https://api.github.com/repos/hadley/adv-r/git/refs{/sha}
+## 5               https://api.github.com/repos/hadley/appdirs/git/refs{/sha}
+## 6                 https://api.github.com/repos/hadley/arrow/git/refs{/sha}
+##                                                                   trees_url
+## 1 https://api.github.com/repos/hadley/15-state-of-the-union/git/trees{/sha}
+## 2     https://api.github.com/repos/hadley/15-student-papers/git/trees{/sha}
+## 3              https://api.github.com/repos/hadley/500lines/git/trees{/sha}
+## 4                 https://api.github.com/repos/hadley/adv-r/git/trees{/sha}
+## 5               https://api.github.com/repos/hadley/appdirs/git/trees{/sha}
+## 6                 https://api.github.com/repos/hadley/arrow/git/trees{/sha}
+##                                                               statuses_url
+## 1 https://api.github.com/repos/hadley/15-state-of-the-union/statuses/{sha}
+## 2     https://api.github.com/repos/hadley/15-student-papers/statuses/{sha}
+## 3              https://api.github.com/repos/hadley/500lines/statuses/{sha}
+## 4                 https://api.github.com/repos/hadley/adv-r/statuses/{sha}
+## 5               https://api.github.com/repos/hadley/appdirs/statuses/{sha}
+## 6                 https://api.github.com/repos/hadley/arrow/statuses/{sha}
+##                                                         languages_url
+## 1 https://api.github.com/repos/hadley/15-state-of-the-union/languages
+## 2     https://api.github.com/repos/hadley/15-student-papers/languages
+## 3              https://api.github.com/repos/hadley/500lines/languages
+## 4                 https://api.github.com/repos/hadley/adv-r/languages
+## 5               https://api.github.com/repos/hadley/appdirs/languages
+## 6                 https://api.github.com/repos/hadley/arrow/languages
+##                                                         stargazers_url
+## 1 https://api.github.com/repos/hadley/15-state-of-the-union/stargazers
+## 2     https://api.github.com/repos/hadley/15-student-papers/stargazers
+## 3              https://api.github.com/repos/hadley/500lines/stargazers
+## 4                 https://api.github.com/repos/hadley/adv-r/stargazers
+## 5               https://api.github.com/repos/hadley/appdirs/stargazers
+## 6                 https://api.github.com/repos/hadley/arrow/stargazers
+##                                                         contributors_url
+## 1 https://api.github.com/repos/hadley/15-state-of-the-union/contributors
+## 2     https://api.github.com/repos/hadley/15-student-papers/contributors
+## 3              https://api.github.com/repos/hadley/500lines/contributors
+## 4                 https://api.github.com/repos/hadley/adv-r/contributors
+## 5               https://api.github.com/repos/hadley/appdirs/contributors
+## 6                 https://api.github.com/repos/hadley/arrow/contributors
+##                                                         subscribers_url
+## 1 https://api.github.com/repos/hadley/15-state-of-the-union/subscribers
+## 2     https://api.github.com/repos/hadley/15-student-papers/subscribers
+## 3              https://api.github.com/repos/hadley/500lines/subscribers
+## 4                 https://api.github.com/repos/hadley/adv-r/subscribers
+## 5               https://api.github.com/repos/hadley/appdirs/subscribers
+## 6                 https://api.github.com/repos/hadley/arrow/subscribers
+##                                                         subscription_url
+## 1 https://api.github.com/repos/hadley/15-state-of-the-union/subscription
+## 2     https://api.github.com/repos/hadley/15-student-papers/subscription
+## 3              https://api.github.com/repos/hadley/500lines/subscription
+## 4                 https://api.github.com/repos/hadley/adv-r/subscription
+## 5               https://api.github.com/repos/hadley/appdirs/subscription
+## 6                 https://api.github.com/repos/hadley/arrow/subscription
+##                                                               commits_url
+## 1 https://api.github.com/repos/hadley/15-state-of-the-union/commits{/sha}
+## 2     https://api.github.com/repos/hadley/15-student-papers/commits{/sha}
+## 3              https://api.github.com/repos/hadley/500lines/commits{/sha}
+## 4                 https://api.github.com/repos/hadley/adv-r/commits{/sha}
+## 5               https://api.github.com/repos/hadley/appdirs/commits{/sha}
+## 6                 https://api.github.com/repos/hadley/arrow/commits{/sha}
+##                                                               git_commits_url
+## 1 https://api.github.com/repos/hadley/15-state-of-the-union/git/commits{/sha}
+## 2     https://api.github.com/repos/hadley/15-student-papers/git/commits{/sha}
+## 3              https://api.github.com/repos/hadley/500lines/git/commits{/sha}
+## 4                 https://api.github.com/repos/hadley/adv-r/git/commits{/sha}
+## 5               https://api.github.com/repos/hadley/appdirs/git/commits{/sha}
+## 6                 https://api.github.com/repos/hadley/arrow/git/commits{/sha}
+##                                                                  comments_url
+## 1 https://api.github.com/repos/hadley/15-state-of-the-union/comments{/number}
+## 2     https://api.github.com/repos/hadley/15-student-papers/comments{/number}
+## 3              https://api.github.com/repos/hadley/500lines/comments{/number}
+## 4                 https://api.github.com/repos/hadley/adv-r/comments{/number}
+## 5               https://api.github.com/repos/hadley/appdirs/comments{/number}
+## 6                 https://api.github.com/repos/hadley/arrow/comments{/number}
+##                                                                    issue_comment_url
+## 1 https://api.github.com/repos/hadley/15-state-of-the-union/issues/comments{/number}
+## 2     https://api.github.com/repos/hadley/15-student-papers/issues/comments{/number}
+## 3              https://api.github.com/repos/hadley/500lines/issues/comments{/number}
+## 4                 https://api.github.com/repos/hadley/adv-r/issues/comments{/number}
+## 5               https://api.github.com/repos/hadley/appdirs/issues/comments{/number}
+## 6                 https://api.github.com/repos/hadley/arrow/issues/comments{/number}
+##                                                                 contents_url
+## 1 https://api.github.com/repos/hadley/15-state-of-the-union/contents/{+path}
+## 2     https://api.github.com/repos/hadley/15-student-papers/contents/{+path}
+## 3              https://api.github.com/repos/hadley/500lines/contents/{+path}
+## 4                 https://api.github.com/repos/hadley/adv-r/contents/{+path}
+## 5               https://api.github.com/repos/hadley/appdirs/contents/{+path}
+## 6                 https://api.github.com/repos/hadley/arrow/contents/{+path}
+##                                                                         compare_url
+## 1 https://api.github.com/repos/hadley/15-state-of-the-union/compare/{base}...{head}
+## 2     https://api.github.com/repos/hadley/15-student-papers/compare/{base}...{head}
+## 3              https://api.github.com/repos/hadley/500lines/compare/{base}...{head}
+## 4                 https://api.github.com/repos/hadley/adv-r/compare/{base}...{head}
+## 5               https://api.github.com/repos/hadley/appdirs/compare/{base}...{head}
+## 6                 https://api.github.com/repos/hadley/arrow/compare/{base}...{head}
+##                                                         merges_url
+## 1 https://api.github.com/repos/hadley/15-state-of-the-union/merges
+## 2     https://api.github.com/repos/hadley/15-student-papers/merges
+## 3              https://api.github.com/repos/hadley/500lines/merges
+## 4                 https://api.github.com/repos/hadley/adv-r/merges
+## 5               https://api.github.com/repos/hadley/appdirs/merges
+## 6                 https://api.github.com/repos/hadley/arrow/merges
+##                                                                        archive_url
+## 1 https://api.github.com/repos/hadley/15-state-of-the-union/{archive_format}{/ref}
+## 2     https://api.github.com/repos/hadley/15-student-papers/{archive_format}{/ref}
+## 3              https://api.github.com/repos/hadley/500lines/{archive_format}{/ref}
+## 4                 https://api.github.com/repos/hadley/adv-r/{archive_format}{/ref}
+## 5               https://api.github.com/repos/hadley/appdirs/{archive_format}{/ref}
+## 6                 https://api.github.com/repos/hadley/arrow/{archive_format}{/ref}
+##                                                         downloads_url
+## 1 https://api.github.com/repos/hadley/15-state-of-the-union/downloads
+## 2     https://api.github.com/repos/hadley/15-student-papers/downloads
+## 3              https://api.github.com/repos/hadley/500lines/downloads
+## 4                 https://api.github.com/repos/hadley/adv-r/downloads
+## 5               https://api.github.com/repos/hadley/appdirs/downloads
+## 6                 https://api.github.com/repos/hadley/arrow/downloads
+##                                                                  issues_url
+## 1 https://api.github.com/repos/hadley/15-state-of-the-union/issues{/number}
+## 2     https://api.github.com/repos/hadley/15-student-papers/issues{/number}
+## 3              https://api.github.com/repos/hadley/500lines/issues{/number}
+## 4                 https://api.github.com/repos/hadley/adv-r/issues{/number}
+## 5               https://api.github.com/repos/hadley/appdirs/issues{/number}
+## 6                 https://api.github.com/repos/hadley/arrow/issues{/number}
+##                                                                  pulls_url
+## 1 https://api.github.com/repos/hadley/15-state-of-the-union/pulls{/number}
+## 2     https://api.github.com/repos/hadley/15-student-papers/pulls{/number}
+## 3              https://api.github.com/repos/hadley/500lines/pulls{/number}
+## 4                 https://api.github.com/repos/hadley/adv-r/pulls{/number}
+## 5               https://api.github.com/repos/hadley/appdirs/pulls{/number}
+## 6                 https://api.github.com/repos/hadley/arrow/pulls{/number}
+##                                                                  milestones_url
+## 1 https://api.github.com/repos/hadley/15-state-of-the-union/milestones{/number}
+## 2     https://api.github.com/repos/hadley/15-student-papers/milestones{/number}
+## 3              https://api.github.com/repos/hadley/500lines/milestones{/number}
+## 4                 https://api.github.com/repos/hadley/adv-r/milestones{/number}
+## 5               https://api.github.com/repos/hadley/appdirs/milestones{/number}
+## 6                 https://api.github.com/repos/hadley/arrow/milestones{/number}
+##                                                                                   notifications_url
+## 1 https://api.github.com/repos/hadley/15-state-of-the-union/notifications{?since,all,participating}
+## 2     https://api.github.com/repos/hadley/15-student-papers/notifications{?since,all,participating}
+## 3              https://api.github.com/repos/hadley/500lines/notifications{?since,all,participating}
+## 4                 https://api.github.com/repos/hadley/adv-r/notifications{?since,all,participating}
+## 5               https://api.github.com/repos/hadley/appdirs/notifications{?since,all,participating}
+## 6                 https://api.github.com/repos/hadley/arrow/notifications{?since,all,participating}
+##                                                                labels_url
+## 1 https://api.github.com/repos/hadley/15-state-of-the-union/labels{/name}
+## 2     https://api.github.com/repos/hadley/15-student-papers/labels{/name}
+## 3              https://api.github.com/repos/hadley/500lines/labels{/name}
+## 4                 https://api.github.com/repos/hadley/adv-r/labels{/name}
+## 5               https://api.github.com/repos/hadley/appdirs/labels{/name}
+## 6                 https://api.github.com/repos/hadley/arrow/labels{/name}
+##                                                              releases_url
+## 1 https://api.github.com/repos/hadley/15-state-of-the-union/releases{/id}
+## 2     https://api.github.com/repos/hadley/15-student-papers/releases{/id}
+## 3              https://api.github.com/repos/hadley/500lines/releases{/id}
+## 4                 https://api.github.com/repos/hadley/adv-r/releases{/id}
+## 5               https://api.github.com/repos/hadley/appdirs/releases{/id}
+## 6                 https://api.github.com/repos/hadley/arrow/releases{/id}
+##                                                         deployments_url
+## 1 https://api.github.com/repos/hadley/15-state-of-the-union/deployments
+## 2     https://api.github.com/repos/hadley/15-student-papers/deployments
+## 3              https://api.github.com/repos/hadley/500lines/deployments
+## 4                 https://api.github.com/repos/hadley/adv-r/deployments
+## 5               https://api.github.com/repos/hadley/appdirs/deployments
+## 6                 https://api.github.com/repos/hadley/arrow/deployments
+##             created_at           updated_at            pushed_at
+## 1 2015-08-09T03:22:26Z 2019-08-18T16:49:32Z 2015-08-10T20:29:10Z
+## 2 2015-08-11T13:51:29Z 2019-08-18T16:49:40Z 2015-08-21T15:27:51Z
+## 3 2013-12-06T14:35:23Z 2014-04-29T13:52:08Z 2013-12-06T01:16:37Z
+## 4 2013-08-20T11:43:03Z 2020-04-04T07:45:31Z 2020-02-27T21:58:35Z
+## 5 2012-07-23T17:21:31Z 2019-08-13T15:06:42Z 2011-01-26T22:04:19Z
+## 6 2020-01-21T19:38:43Z 2020-01-21T19:38:46Z 2020-04-01T23:29:09Z
+##                                             git_url
+## 1 git://github.com/hadley/15-state-of-the-union.git
+## 2     git://github.com/hadley/15-student-papers.git
+## 3              git://github.com/hadley/500lines.git
+## 4                 git://github.com/hadley/adv-r.git
+## 5               git://github.com/hadley/appdirs.git
+## 6                 git://github.com/hadley/arrow.git
+##                                           ssh_url
+## 1 git@github.com:hadley/15-state-of-the-union.git
+## 2     git@github.com:hadley/15-student-papers.git
+## 3              git@github.com:hadley/500lines.git
+## 4                 git@github.com:hadley/adv-r.git
+## 5               git@github.com:hadley/appdirs.git
+## 6                 git@github.com:hadley/arrow.git
+##                                             clone_url
+## 1 https://github.com/hadley/15-state-of-the-union.git
+## 2     https://github.com/hadley/15-student-papers.git
+## 3              https://github.com/hadley/500lines.git
+## 4                 https://github.com/hadley/adv-r.git
+## 5               https://github.com/hadley/appdirs.git
+## 6                 https://github.com/hadley/arrow.git
+##                                           svn_url
+## 1 https://github.com/hadley/15-state-of-the-union
+## 2     https://github.com/hadley/15-student-papers
+## 3              https://github.com/hadley/500lines
+## 4                 https://github.com/hadley/adv-r
+## 5               https://github.com/hadley/appdirs
+## 6                 https://github.com/hadley/arrow
+##                              homepage  size stargazers_count watchers_count
+## 1                                &lt;NA&gt;  4519               23             23
+## 2                                &lt;NA&gt;  2956               14             14
+## 3                                &lt;NA&gt;   490                0              0
+## 4              http://adv-r.hadley.nz 38421             1664           1664
+## 5 http://pypi.python.org/pypi/appdirs   105                6              6
+## 6            https://arrow.apache.org 48529                0              0
+##   language has_issues has_projects has_downloads has_wiki has_pages forks_count
+## 1        R       TRUE         TRUE          TRUE     TRUE     FALSE           7
+## 2        R       TRUE         TRUE          TRUE     TRUE     FALSE           0
+## 3      CSS      FALSE         TRUE          TRUE     TRUE     FALSE           1
+## 4      TeX       TRUE        FALSE          TRUE    FALSE     FALSE        1539
+## 5   Python      FALSE         TRUE          TRUE     TRUE     FALSE           0
+## 6     &lt;NA&gt;      FALSE         TRUE          TRUE    FALSE     FALSE           0
+##   mirror_url archived disabled open_issues_count license.key       license.name
+## 1         NA    FALSE    FALSE                 0        &lt;NA&gt;               &lt;NA&gt;
+## 2         NA    FALSE    FALSE                 0        &lt;NA&gt;               &lt;NA&gt;
+## 3         NA    FALSE    FALSE                 0       other              Other
+## 4         NA    FALSE    FALSE                25       other              Other
+## 5         NA    FALSE    FALSE                 0       other              Other
+## 6         NA    FALSE    FALSE                 0  apache-2.0 Apache License 2.0
+##   license.spdx_id                                license.url  license.node_id
+## 1            &lt;NA&gt;                                       &lt;NA&gt;             &lt;NA&gt;
+## 2            &lt;NA&gt;                                       &lt;NA&gt;             &lt;NA&gt;
+## 3     NOASSERTION                                       &lt;NA&gt; MDc6TGljZW5zZTA=
+## 4     NOASSERTION                                       &lt;NA&gt; MDc6TGljZW5zZTA=
+## 5     NOASSERTION                                       &lt;NA&gt; MDc6TGljZW5zZTA=
+## 6      Apache-2.0 https://api.github.com/licenses/apache-2.0 MDc6TGljZW5zZTI=
+##   forks open_issues watchers default_branch
+## 1     7           0       23         master
+## 2     0           0       14         master
+## 3     1           0        0         master
+## 4  1539          25     1664         master
+## 5     0           0        6         master
+## 6     0           0        0         master
+```
+
+---
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "atom-one-dark",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

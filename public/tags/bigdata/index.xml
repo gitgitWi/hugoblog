@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>bigdata on gitgitWi&#39;s blogdown pages</title>
+    <link>/blogdown/tags/bigdata/</link>
+    <description>Recent content in bigdata on gitgitWi&#39;s blogdown pages</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ko-KR</language>
+    
+	<atom:link href="/blogdown/tags/bigdata/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Lecture 0403-1 Text Mining with R</title>
+      <link>/blogdown/1/01/lecture-0403-1-text-mining-with-r/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/blogdown/1/01/lecture-0403-1-text-mining-with-r/</guid>
+      <description>true  텍스트 마이닝 Text Mining Text-mining 개요 ###분석절차 - 형태소분석 Morphology Analsys - 명사, 동사, 형용사 등 의미 지닌 품사 단어 추출 - 빈도표 - 시각화
+ ex1. 힙합 가사 분석 import libraries and data files library(KoNLP) ## Checking user defined dictionary! library(memoise) library(dplyr) ## ## 다음의 패키지를 부착합니다: &amp;#39;dplyr&amp;#39; ## The following objects are masked from &amp;#39;package:stats&amp;#39;: ## ## filter, lag ## The following objects are masked from &amp;#39;package:base&amp;#39;: ## ## intersect, setdiff, setequal, union library(stringr) Sejong 보다 많은 단어 데이터 보유한 NIADic 사용 ; 983012 개 단어, KoNLP 함수</description>
+    </item>
+    
+    <item>
+      <title>Lecture 0403-2 Visualization Maps &amp; Graphs with R</title>
+      <link>/blogdown/1/01/lecture-0403-2-visualization-maps-graphs-with-r/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/blogdown/1/01/lecture-0403-2-visualization-maps-graphs-with-r/</guid>
+      <description>true  Visualization Maps Choropleth Map  지역별 통계치를 색깔 차이로 표현 인구나 소득 같은 특성   미국 주별 강력 범죄율 단계 구분도 import libraries library(devtools) ## 필요한 패키지를 로딩중입니다: usethis # library(htmlwidgets) # library(htmltools) library(jsonlite) library(yaml) library(base64enc) library(tm) ## 필요한 패키지를 로딩중입니다: NLP # library(wordcloud2) # library(ggplot2) library(tibble) # maps library(ggmap) ## 필요한 패키지를 로딩중입니다: ggplot2 ## ## 다음의 패키지를 부착합니다: &amp;#39;ggplot2&amp;#39; ## The following object is masked from &amp;#39;package:NLP&amp;#39;: ## ## annotate ## Google&amp;#39;s Terms of Service: https://cloud.</description>
+    </item>
+    
+  </channel>
+</rss>

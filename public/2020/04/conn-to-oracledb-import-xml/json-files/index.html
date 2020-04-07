@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="ko-KR">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="author" content="gitgitWi">
+<meta name="keywords" content="">
+<meta name="description" content="DB 연결 Necessary Libraries library(RJDBC) ## 필요한 패키지를 로딩중입니다: DBI ## 필요한 패키지를 로딩중입니다: rJava library(rJava) library(igraph) ## ## 다음의 패키지를 부착합니다: &#39;igraph&#39; ## The following objects are masked from &#39;package:stats&#39;: ## ## decompose, spectrum ## The following object is masked from &#39;package:base&#39;: ## ## union jdbcDriver &lt;- JDBC(driverClass = &quot;oracle.jdbc.OracleDriver&quot;, classPath = &quot;/Users/WnJ/Desktop/johnwi_KNOU/Programming/DB/oracle/ojdbc6.jar&quot;) conn &lt;- dbConnect(jdbcDriver, &quot;jdbc:oracle:thin:@//localhost:1521/xe&quot;, &quot;dokdok&quot;, &quot;1234&quot;) result &lt;- dbGetQuery(conn, &quot;select * from TEST&quot;) head(result) ## NAME PHONE ## 1 test1 010-1234-1234 ## 2 test2 &lt;NA&gt; ## 3 &lt;NA&gt; &lt;NA&gt; ## 4 &lt;NA&gt; &lt;NA&gt; ## 5 &lt;NA&gt; &lt;NA&gt; ## 6 &lt;NA&gt; &lt;NA&gt;   sqldf : Oracle Query 실행을 위한 package library(sqldf) ## 필요한 패키지를 로딩중입니다: gsubfn ## 필요한 패키지를 로딩중입니다: proto ## 필요한 패키지를 로딩중입니다: RSQLite head(iris) ## Sepal.">
+
+
+<meta property="og:description" content="DB 연결 Necessary Libraries library(RJDBC) ## 필요한 패키지를 로딩중입니다: DBI ## 필요한 패키지를 로딩중입니다: rJava library(rJava) library(igraph) ## ## 다음의 패키지를 부착합니다: &#39;igraph&#39; ## The following objects are masked from &#39;package:stats&#39;: ## ## decompose, spectrum ## The following object is masked from &#39;package:base&#39;: ## ## union jdbcDriver &lt;- JDBC(driverClass = &quot;oracle.jdbc.OracleDriver&quot;, classPath = &quot;/Users/WnJ/Desktop/johnwi_KNOU/Programming/DB/oracle/ojdbc6.jar&quot;) conn &lt;- dbConnect(jdbcDriver, &quot;jdbc:oracle:thin:@//localhost:1521/xe&quot;, &quot;dokdok&quot;, &quot;1234&quot;) result &lt;- dbGetQuery(conn, &quot;select * from TEST&quot;) head(result) ## NAME PHONE ## 1 test1 010-1234-1234 ## 2 test2 &lt;NA&gt; ## 3 &lt;NA&gt; &lt;NA&gt; ## 4 &lt;NA&gt; &lt;NA&gt; ## 5 &lt;NA&gt; &lt;NA&gt; ## 6 &lt;NA&gt; &lt;NA&gt;   sqldf : Oracle Query 실행을 위한 package library(sqldf) ## 필요한 패키지를 로딩중입니다: gsubfn ## 필요한 패키지를 로딩중입니다: proto ## 필요한 패키지를 로딩중입니다: RSQLite head(iris) ## Sepal.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="conn to OracleDB, import XML/JSON files">
+<meta name="twitter:title" content="conn to OracleDB, import XML/JSON files">
+<meta property="og:url" content="/blogdown/2020/04/conn-to-oracledb-import-xml/json-files/">
+<meta property="twitter:url" content="/blogdown/2020/04/conn-to-oracledb-import-xml/json-files/">
+<meta property="og:site_name" content="gitgitWi&#39;s blogdown pages">
+<meta property="og:description" content="DB 연결 Necessary Libraries library(RJDBC) ## 필요한 패키지를 로딩중입니다: DBI ## 필요한 패키지를 로딩중입니다: rJava library(rJava) library(igraph) ## ## 다음의 패키지를 부착합니다: &#39;igraph&#39; ## The following objects are masked from &#39;package:stats&#39;: ## ## decompose, spectrum ## The following object is masked from &#39;package:base&#39;: ## ## union jdbcDriver &lt;- JDBC(driverClass = &quot;oracle.jdbc.OracleDriver&quot;, classPath = &quot;/Users/WnJ/Desktop/johnwi_KNOU/Programming/DB/oracle/ojdbc6.jar&quot;) conn &lt;- dbConnect(jdbcDriver, &quot;jdbc:oracle:thin:@//localhost:1521/xe&quot;, &quot;dokdok&quot;, &quot;1234&quot;) result &lt;- dbGetQuery(conn, &quot;select * from TEST&quot;) head(result) ## NAME PHONE ## 1 test1 010-1234-1234 ## 2 test2 &lt;NA&gt; ## 3 &lt;NA&gt; &lt;NA&gt; ## 4 &lt;NA&gt; &lt;NA&gt; ## 5 &lt;NA&gt; &lt;NA&gt; ## 6 &lt;NA&gt; &lt;NA&gt;   sqldf : Oracle Query 실행을 위한 package library(sqldf) ## 필요한 패키지를 로딩중입니다: gsubfn ## 필요한 패키지를 로딩중입니다: proto ## 필요한 패키지를 로딩중입니다: RSQLite head(iris) ## Sepal.">
+<meta name="twitter:description" content="DB 연결 Necessary Libraries library(RJDBC) ## 필요한 패키지를 로딩중입니다: DBI ## 필요한 패키지를 로딩중입니다: rJava library(rJava) library(igraph) ## ## 다음의 패키지를 부착합니다: &#39;igraph&#39; ## The following objects are masked from &#39;package:stats&#39;: ## ## decompose, spectrum ## The following object is masked from &#39;package:base&#39;: ## ## union jdbcDriver &lt;- JDBC(driverClass = &quot;oracle.jdbc.OracleDriver&quot;, classPath = &quot;/Users/WnJ/Desktop/johnwi_KNOU/Programming/DB/oracle/ojdbc6.jar&quot;) conn &lt;- dbConnect(jdbcDriver, &quot;jdbc:oracle:thin:@//localhost:1521/xe&quot;, &quot;dokdok&quot;, &quot;1234&quot;) result &lt;- dbGetQuery(conn, &quot;select * from TEST&quot;) head(result) ## NAME PHONE ## 1 test1 010-1234-1234 ## 2 test2 &lt;NA&gt; ## 3 &lt;NA&gt; &lt;NA&gt; ## 4 &lt;NA&gt; &lt;NA&gt; ## 5 &lt;NA&gt; &lt;NA&gt; ## 6 &lt;NA&gt; &lt;NA&gt;   sqldf : Oracle Query 실행을 위한 package library(sqldf) ## 필요한 패키지를 로딩중입니다: gsubfn ## 필요한 패키지를 로딩중입니다: proto ## 필요한 패키지를 로딩중입니다: RSQLite head(iris) ## Sepal.">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2020-04-07T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2020-04-07T00:00:00">
+  
+  
+  
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://www.gravatar.com/avatar/2b31594a11b6836f0f2b66a053e66bec?s=640">
+  <meta property="twitter:image" content="https://www.gravatar.com/avatar/2b31594a11b6836f0f2b66a053e66bec?s=640">
+
+
+    <title>conn to OracleDB, import XML/JSON files</title>
+
+    <link rel="icon" href="/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="/blogdown/2020/04/conn-to-oracledb-import-xml/json-files/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="/blogdown/">gitgitWi&#39;s blogdown pages</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://www.gravatar.com/avatar/2b31594a11b6836f0f2b66a053e66bec?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="/#about">
+          <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/2b31594a11b6836f0f2b66a053e66bec?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">gitgitWi</h4>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/blogdown/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/blogdown/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/blogdown/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/blogdown/archives">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/blogdown/#about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://gitgitWi.github.io" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://gitgitWi.github.io/blogdown" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub/blogdown</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/blogdown/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="4"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title" itemprop="headline">
+      conn to OracleDB, import XML/JSON files
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2020-04-07T00:00:00Z">
+        
+  
+  
+  
+  
+    2020-April-7
+  
+
+      </time>
+    
+    
+  </div>
+
+</div>
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              
+
+
+<div id="db-연결" class="section level2">
+<h2>DB 연결</h2>
+<div id="necessary-libraries" class="section level4">
+<h4>Necessary Libraries</h4>
+<pre class="r"><code>library(RJDBC)</code></pre>
+<pre><code>## 필요한 패키지를 로딩중입니다: DBI</code></pre>
+<pre><code>## 필요한 패키지를 로딩중입니다: rJava</code></pre>
+<pre class="r"><code>library(rJava)
+library(igraph)</code></pre>
+<pre><code>## 
+## 다음의 패키지를 부착합니다: &#39;igraph&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     decompose, spectrum</code></pre>
+<pre><code>## The following object is masked from &#39;package:base&#39;:
+## 
+##     union</code></pre>
+<hr />
+<pre class="r"><code>jdbcDriver &lt;- JDBC(driverClass = &quot;oracle.jdbc.OracleDriver&quot;, classPath = &quot;/Users/WnJ/Desktop/johnwi_KNOU/Programming/DB/oracle/ojdbc6.jar&quot;)</code></pre>
+<pre class="r"><code>conn &lt;- dbConnect(jdbcDriver, &quot;jdbc:oracle:thin:@//localhost:1521/xe&quot;, &quot;dokdok&quot;, &quot;1234&quot;)</code></pre>
+<pre class="r"><code>result &lt;- dbGetQuery(conn, &quot;select * from TEST&quot;)
+head(result)</code></pre>
+<pre><code>##    NAME         PHONE
+## 1 test1 010-1234-1234
+## 2 test2          &lt;NA&gt;
+## 3  &lt;NA&gt;          &lt;NA&gt;
+## 4  &lt;NA&gt;          &lt;NA&gt;
+## 5  &lt;NA&gt;          &lt;NA&gt;
+## 6  &lt;NA&gt;          &lt;NA&gt;</code></pre>
+</div>
+</div>
+<div id="sqldf-oracle-query-실행을-위한-package" class="section level2">
+<h2><code>sqldf</code> : Oracle Query 실행을 위한 package</h2>
+<pre class="r"><code>library(sqldf)</code></pre>
+<pre><code>## 필요한 패키지를 로딩중입니다: gsubfn</code></pre>
+<pre><code>## 필요한 패키지를 로딩중입니다: proto</code></pre>
+<pre><code>## 필요한 패키지를 로딩중입니다: RSQLite</code></pre>
+<pre class="r"><code>head(iris)</code></pre>
+<pre><code>##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+## 1          5.1         3.5          1.4         0.2  setosa
+## 2          4.9         3.0          1.4         0.2  setosa
+## 3          4.7         3.2          1.3         0.2  setosa
+## 4          4.6         3.1          1.5         0.2  setosa
+## 5          5.0         3.6          1.4         0.2  setosa
+## 6          5.4         3.9          1.7         0.4  setosa</code></pre>
+<hr />
+<pre class="r"><code>sqldf(&quot;select Species from iris&quot;)</code></pre>
+<pre><code>##        Species
+## 1       setosa
+## 2       setosa
+## 3       setosa
+## 4       setosa
+## 5       setosa
+## 6       setosa
+## 7       setosa
+## 8       setosa
+## 9       setosa
+## 10      setosa
+## 11      setosa
+## 12      setosa
+## 13      setosa
+## 14      setosa
+## 15      setosa
+## 16      setosa
+## 17      setosa
+## 18      setosa
+## 19      setosa
+## 20      setosa
+## 21      setosa
+## 22      setosa
+## 23      setosa
+## 24      setosa
+## 25      setosa
+## 26      setosa
+## 27      setosa
+## 28      setosa
+## 29      setosa
+## 30      setosa
+## 31      setosa
+## 32      setosa
+## 33      setosa
+## 34      setosa
+## 35      setosa
+## 36      setosa
+## 37      setosa
+## 38      setosa
+## 39      setosa
+## 40      setosa
+## 41      setosa
+## 42      setosa
+## 43      setosa
+## 44      setosa
+## 45      setosa
+## 46      setosa
+## 47      setosa
+## 48      setosa
+## 49      setosa
+## 50      setosa
+## 51  versicolor
+## 52  versicolor
+## 53  versicolor
+## 54  versicolor
+## 55  versicolor
+## 56  versicolor
+## 57  versicolor
+## 58  versicolor
+## 59  versicolor
+## 60  versicolor
+## 61  versicolor
+## 62  versicolor
+## 63  versicolor
+## 64  versicolor
+## 65  versicolor
+## 66  versicolor
+## 67  versicolor
+## 68  versicolor
+## 69  versicolor
+## 70  versicolor
+## 71  versicolor
+## 72  versicolor
+## 73  versicolor
+## 74  versicolor
+## 75  versicolor
+## 76  versicolor
+## 77  versicolor
+## 78  versicolor
+## 79  versicolor
+## 80  versicolor
+## 81  versicolor
+## 82  versicolor
+## 83  versicolor
+## 84  versicolor
+## 85  versicolor
+## 86  versicolor
+## 87  versicolor
+## 88  versicolor
+## 89  versicolor
+## 90  versicolor
+## 91  versicolor
+## 92  versicolor
+## 93  versicolor
+## 94  versicolor
+## 95  versicolor
+## 96  versicolor
+## 97  versicolor
+## 98  versicolor
+## 99  versicolor
+## 100 versicolor
+## 101  virginica
+## 102  virginica
+## 103  virginica
+## 104  virginica
+## 105  virginica
+## 106  virginica
+## 107  virginica
+## 108  virginica
+## 109  virginica
+## 110  virginica
+## 111  virginica
+## 112  virginica
+## 113  virginica
+## 114  virginica
+## 115  virginica
+## 116  virginica
+## 117  virginica
+## 118  virginica
+## 119  virginica
+## 120  virginica
+## 121  virginica
+## 122  virginica
+## 123  virginica
+## 124  virginica
+## 125  virginica
+## 126  virginica
+## 127  virginica
+## 128  virginica
+## 129  virginica
+## 130  virginica
+## 131  virginica
+## 132  virginica
+## 133  virginica
+## 134  virginica
+## 135  virginica
+## 136  virginica
+## 137  virginica
+## 138  virginica
+## 139  virginica
+## 140  virginica
+## 141  virginica
+## 142  virginica
+## 143  virginica
+## 144  virginica
+## 145  virginica
+## 146  virginica
+## 147  virginica
+## 148  virginica
+## 149  virginica
+## 150  virginica</code></pre>
+<hr />
+<pre class="r"><code>sqldf(&quot;select * from iris limit 4&quot;)</code></pre>
+<pre><code>##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+## 1          5.1         3.5          1.4         0.2  setosa
+## 2          4.9         3.0          1.4         0.2  setosa
+## 3          4.7         3.2          1.3         0.2  setosa
+## 4          4.6         3.1          1.5         0.2  setosa</code></pre>
+<div id="column선택-위한-string-사용시-따옴표-반드시-큰-따옴표-사용" class="section level5">
+<h5>column선택 위한 String 사용시 따옴표 반드시 큰 따옴표 사용(&quot; &quot;)</h5>
+<pre class="r"><code>subset(iris, Sepal.Length &gt;= 5 &amp; Sepal.Length &lt;= 5.2 )</code></pre>
+<pre><code>##    Sepal.Length Sepal.Width Petal.Length Petal.Width    Species
+## 1           5.1         3.5          1.4         0.2     setosa
+## 5           5.0         3.6          1.4         0.2     setosa
+## 8           5.0         3.4          1.5         0.2     setosa
+## 18          5.1         3.5          1.4         0.3     setosa
+## 20          5.1         3.8          1.5         0.3     setosa
+## 22          5.1         3.7          1.5         0.4     setosa
+## 24          5.1         3.3          1.7         0.5     setosa
+## 26          5.0         3.0          1.6         0.2     setosa
+## 27          5.0         3.4          1.6         0.4     setosa
+## 28          5.2         3.5          1.5         0.2     setosa
+## 29          5.2         3.4          1.4         0.2     setosa
+## 33          5.2         4.1          1.5         0.1     setosa
+## 36          5.0         3.2          1.2         0.2     setosa
+## 40          5.1         3.4          1.5         0.2     setosa
+## 41          5.0         3.5          1.3         0.3     setosa
+## 44          5.0         3.5          1.6         0.6     setosa
+## 45          5.1         3.8          1.9         0.4     setosa
+## 47          5.1         3.8          1.6         0.2     setosa
+## 50          5.0         3.3          1.4         0.2     setosa
+## 60          5.2         2.7          3.9         1.4 versicolor
+## 61          5.0         2.0          3.5         1.0 versicolor
+## 94          5.0         2.3          3.3         1.0 versicolor
+## 99          5.1         2.5          3.0         1.1 versicolor</code></pre>
+<pre class="r"><code>sqldf(&#39;select * from iris where &quot;Sepal.Length&quot; between 5 and 6 &#39;)</code></pre>
+<pre><code>##    Sepal.Length Sepal.Width Petal.Length Petal.Width    Species
+## 1           5.1         3.5          1.4         0.2     setosa
+## 2           5.0         3.6          1.4         0.2     setosa
+## 3           5.4         3.9          1.7         0.4     setosa
+## 4           5.0         3.4          1.5         0.2     setosa
+## 5           5.4         3.7          1.5         0.2     setosa
+## 6           5.8         4.0          1.2         0.2     setosa
+## 7           5.7         4.4          1.5         0.4     setosa
+## 8           5.4         3.9          1.3         0.4     setosa
+## 9           5.1         3.5          1.4         0.3     setosa
+## 10          5.7         3.8          1.7         0.3     setosa
+## 11          5.1         3.8          1.5         0.3     setosa
+## 12          5.4         3.4          1.7         0.2     setosa
+## 13          5.1         3.7          1.5         0.4     setosa
+## 14          5.1         3.3          1.7         0.5     setosa
+## 15          5.0         3.0          1.6         0.2     setosa
+## 16          5.0         3.4          1.6         0.4     setosa
+## 17          5.2         3.5          1.5         0.2     setosa
+## 18          5.2         3.4          1.4         0.2     setosa
+## 19          5.4         3.4          1.5         0.4     setosa
+## 20          5.2         4.1          1.5         0.1     setosa
+## 21          5.5         4.2          1.4         0.2     setosa
+## 22          5.0         3.2          1.2         0.2     setosa
+## 23          5.5         3.5          1.3         0.2     setosa
+## 24          5.1         3.4          1.5         0.2     setosa
+## 25          5.0         3.5          1.3         0.3     setosa
+## 26          5.0         3.5          1.6         0.6     setosa
+## 27          5.1         3.8          1.9         0.4     setosa
+## 28          5.1         3.8          1.6         0.2     setosa
+## 29          5.3         3.7          1.5         0.2     setosa
+## 30          5.0         3.3          1.4         0.2     setosa
+## 31          5.5         2.3          4.0         1.3 versicolor
+## 32          5.7         2.8          4.5         1.3 versicolor
+## 33          5.2         2.7          3.9         1.4 versicolor
+## 34          5.0         2.0          3.5         1.0 versicolor
+## 35          5.9         3.0          4.2         1.5 versicolor
+## 36          6.0         2.2          4.0         1.0 versicolor
+## 37          5.6         2.9          3.6         1.3 versicolor
+## 38          5.6         3.0          4.5         1.5 versicolor
+## 39          5.8         2.7          4.1         1.0 versicolor
+## 40          5.6         2.5          3.9         1.1 versicolor
+## 41          5.9         3.2          4.8         1.8 versicolor
+## 42          6.0         2.9          4.5         1.5 versicolor
+## 43          5.7         2.6          3.5         1.0 versicolor
+## 44          5.5         2.4          3.8         1.1 versicolor
+## 45          5.5         2.4          3.7         1.0 versicolor
+## 46          5.8         2.7          3.9         1.2 versicolor
+## 47          6.0         2.7          5.1         1.6 versicolor
+## 48          5.4         3.0          4.5         1.5 versicolor
+## 49          6.0         3.4          4.5         1.6 versicolor
+## 50          5.6         3.0          4.1         1.3 versicolor
+## 51          5.5         2.5          4.0         1.3 versicolor
+## 52          5.5         2.6          4.4         1.2 versicolor
+## 53          5.8         2.6          4.0         1.2 versicolor
+## 54          5.0         2.3          3.3         1.0 versicolor
+## 55          5.6         2.7          4.2         1.3 versicolor
+## 56          5.7         3.0          4.2         1.2 versicolor
+## 57          5.7         2.9          4.2         1.3 versicolor
+## 58          5.1         2.5          3.0         1.1 versicolor
+## 59          5.7         2.8          4.1         1.3 versicolor
+## 60          5.8         2.7          5.1         1.9  virginica
+## 61          5.7         2.5          5.0         2.0  virginica
+## 62          5.8         2.8          5.1         2.4  virginica
+## 63          6.0         2.2          5.0         1.5  virginica
+## 64          5.6         2.8          4.9         2.0  virginica
+## 65          6.0         3.0          4.8         1.8  virginica
+## 66          5.8         2.7          5.1         1.9  virginica
+## 67          5.9         3.0          5.1         1.8  virginica</code></pre>
+</div>
+</div>
+<div id="xml-parsing" class="section level2">
+<h2>XML Parsing</h2>
+<ul>
+<li>html parsing과 동일</li>
+<li>xml은 엄격한 HTML, 태그 해석을 브라우저가 하지 않고 클라이언트가 직접한다는 점이 HTML과 다른 점</li>
+<li>모든 HTML parsing은 XML에 적용 가능</li>
+<li>XML parsing 방법으로는 parsing하지 못하는 HTML이 있을 수도 있음</li>
+</ul>
+<hr />
+<div id="태그-내용-가져오기" class="section level4">
+<h4>1. 태그 내용 가져오기</h4>
+<ul>
+<li>URL주소를 문자열 변수에 할당</li>
+</ul>
+<pre class="r"><code>library(rvest)</code></pre>
+<pre><code>## 필요한 패키지를 로딩중입니다: xml2</code></pre>
+<pre class="r"><code>url &lt;- &#39;http://www.kma.go.kr/weather/forecast/mid-term-xml.jsp?stnId=109&#39;
+
+weather &lt;- read_html (url)
+head(weather)</code></pre>
+<pre><code>## $node
+## &lt;pointer: 0x7fa15d2cba80&gt;
+## 
+## $doc
+## &lt;pointer: 0x7fa15d2cb960&gt;</code></pre>
+<ul>
+<li>필요한 데이터 parsing</li>
+</ul>
+<pre class="r"><code>tmn &lt;- weather %&gt;% html_nodes(&quot;tmn&quot;) %&gt;% html_text()
+head(tmn)</code></pre>
+<pre><code>## [1] &quot;6&quot; &quot;6&quot; &quot;7&quot; &quot;7&quot; &quot;8&quot; &quot;8&quot;</code></pre>
+</div>
+</div>
+
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/blogdown/2020/04/create-blog-pages-by-r-blogdown/" data-tooltip="Create Blog Pages by R-Blogdown">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--disabled">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/blogdown/2020/04/conn-to-oracledb-import-xml/json-files/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/blogdown/2020/04/conn-to-oracledb-import-xml/json-files/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=/blogdown/2020/04/conn-to-oracledb-import-xml/json-files/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2020 <a href="https://gitgitWi.github.io/blogdown">gitgitWi blogdown</a>. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/blogdown/2020/04/create-blog-pages-by-r-blogdown/" data-tooltip="Create Blog Pages by R-Blogdown">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--disabled">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/blogdown/2020/04/conn-to-oracledb-import-xml/json-files/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/blogdown/2020/04/conn-to-oracledb-import-xml/json-files/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=/blogdown/2020/04/conn-to-oracledb-import-xml/json-files/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2Fblogdown%2F2020%2F04%2Fconn-to-oracledb-import-xml%2Fjson-files%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=%2Fblogdown%2F2020%2F04%2Fconn-to-oracledb-import-xml%2Fjson-files%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=%2Fblogdown%2F2020%2F04%2Fconn-to-oracledb-import-xml%2Fjson-files%2F">
+          <i class="fa fa-google-plus"></i><span>Share on Google&#43;</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://www.gravatar.com/avatar/2b31594a11b6836f0f2b66a053e66bec?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">gitgitWi</h4>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        maybe student..
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Yongsan.Seoul/KR
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('/blogdown/images/cover.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = '\/blogdown\/2020\/04\/conn-to-oracledb-import-xml\/json-files\/';
+          
+            this.page.identifier = '\/blogdown\/2020\/04\/conn-to-oracledb-import-xml\/json-files\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'gitgitrm';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+

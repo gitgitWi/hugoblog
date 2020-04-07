@@ -1,0 +1,109 @@
+---
+title: "LN0407 R Markdown"
+output: github_document
+date: "2020-04-07"
+categories:
+  - Study
+  - R
+tags:
+  - R
+  - LectureNotes
+  - R Markdown
+---
+
+### Math LaTeX
+
+#### 사용방법
+표준 LaTeX 수학 문법 이용해 작성
+
+참고 사이트 : https://www.codecogs.com/latex/eqneditor.php
+
+- 디스플레이 수식 :
+
+$$ y_{i} = \sqrt[3]{x_{i}} + \sum_{1}^{n} $$
+
+- 인라인 수식 :
+문장안에서 $y_{i} = \sqrt[3]{x_{i}} + \sum_{1}^{n}$와 같이 수식 입력
+
+### 표 생성 
+
+- 기존 Markdown 방식
+
+```
+구분 | 내용
+-|-
+이름 | 이름이다
+나이 | 1251
+졸업연도 | 1923
+입사연도 | 1332
+설명 | 시간을 거스르는 자
+```
+
+
+구분 | 내용
+-|-
+이름 | 이름이다
+나이 | 1251
+졸업연도 | 1923
+입사연도 | 1332
+설명 | 시간을 거스르는 자
+
+
+- R Markdown
+
+ex.
+
+```{r test1}
+a = -5:5
+b = a^3
+c = data.frame(a,b)
+
+library(ggplot2)
+
+ggplot(data=c, aes(x=a, y=b))+geom_point() + geom_line(color = "BLUE")
+```
+
+### Chunk 관련 Options
+
+- `eval`
+    - FALSE이면 코드는 실행X, 결과값 출력 X, 코드 출력만 됨
+- `include` : 
+    - FALSE이면 코드 실행되지만 코드 / 결과값 출력 X
+    - setup code
+
+- ``` r {R_CODE} ``` : 글 내부에서 바로 코드 실행
+    - 잘 사용하면 table 만들 필요 없이 바로 보고서 작성하면서 결과값 출력 가능
+
+- 정적 table
+    - R의 각 packages에서 제공하는 함수, 반드시 chunk안에서 기재해야
+    - `knitr > kable()` : 함수안에 원하는 데이터 name만 기재하면 자동으로 표 생성
+        - 옵션들 :
+        - `caption` : 표 제목 지정
+        - `align` : 열 별 정렬 (`c` : center, `l` : left, `r` : right )
+        - `results` : 결과값을 markdown으로 바꿀지 결정, 기본값 == `markup`
+        
+```{r results = "asis"}
+library(knitr)
+
+kable(head(iris, 10), caption = "Making a table using kable() in knitr package", aling = c("c", "l","l","l","r"))
+```
+
+- 동적 table
+    - `DT > datatable()`
+        - Javascript library를 통해 interactive한 표 만드는 기능 제공
+        - 이 DT의 완전한 기능은 HTML 기반 출력물에서만 제공
+        - 행수가 많은 경우 default로 10개만 보여주고 나머지는 페이지 넘겨서 조회
+        - Options
+            - `caption`
+            - `filter`
+            
+```{r}
+library(DT)
+
+datatable(iris, caption = "Table by DT Package", filter = "top")
+```
+
+
+* * *
+
+## `flexdashboard`
