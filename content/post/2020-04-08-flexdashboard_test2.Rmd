@@ -1,0 +1,47 @@
+---
+title: "flexdashboard test2 Graph Widget"
+date: 2020-04-08
+
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(dygraphs)
+library(plotly)
+library(highcharter)
+library(dplyr)
+```
+
+### Lung Deaths (All)
+
+```{r}
+dygraph(ldeaths)
+```
+
+
+### Lung Deaths (Male)
+
+```{r}
+dygraph(mdeaths)
+```
+
+### Lung Deaths (Female)
+
+```{r}
+dygraph(fdeaths)
+```
+
+```{r}
+plot_ly(mtcars, x=~hp, y=~mpg, type='scatter', mode = 'markers', color = ~as.factor(cyl))
+```
+
+```{r}
+hchart(mtcars, "scatter", hcaes(x=hp, y=mpg, group=as.factor(cyl)))
+```
+
+```{r}
+hchart(diamonds$price, color = '#B71C1C', name = "Price") %>% hc_title(text = "You can zoom me")
+```

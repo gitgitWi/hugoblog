@@ -1,0 +1,83 @@
+---
+title: "R Markdown(2) flexdashboard"
+output: github_document
+date: 2020-04-08
+toc : true
+toc_sticky : true
+toc_label: "flexdashboard"
+categories:
+  - Study
+  - R
+tags:
+  - R
+  - LectureNotes
+  - RMarkdown
+  - flexdashboard
+comments : true
+---
+
+
+<div id="TOC">
+true
+</div>
+
+<div id="flexdashboard-package" class="section level2">
+<h2>flexdashboard package</h2>
+<div id="introduction" class="section level4">
+<h4>introduction</h4>
+<ul>
+<li>dashboard 작성 및 customization은 RMarkdown에 기반해 이뤄짐</li>
+<li>shiny component들도 덧붙일수 있음</li>
+</ul>
+</div>
+<div id="install-and-import-the-package" class="section level4">
+<h4>install and import the package</h4>
+<p><code>install.packages(&quot;flexdashboard&quot;) \ library(flexdashboard)</code></p>
+</div>
+<div id="create-new-flexdashboard" class="section level4">
+<h4>create new flexdashboard</h4>
+<p><code>new R Markdown</code> -&gt; <code>from templates</code> -&gt; <code>flex dashboard</code></p>
+</div>
+<div id="yaml-front-matter" class="section level4">
+<h4>YAML front matter</h4>
+<pre><code>---
+title: &quot;flexdashboard test&quot;
+output:
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---</code></pre>
+<ul>
+<li><code>orientation: columns</code> : total layout == columns
+<ul>
+<li>options : <code>columns</code>, <code>rows</code></li>
+</ul></li>
+<li><code>vertical_layout : fill</code> : CSS의 media query 방식
+<ul>
+<li>options : <code>fill</code>, <code>scroll</code></li>
+</ul></li>
+</ul>
+</div>
+<div id="column" class="section level4">
+<h4><code>Column</code></h4>
+<pre><code>Column {data-width=650 .tabset}
+-----------------------------------------------------------------------
+### Chart A
+
+### Chart B</code></pre>
+<ul>
+<li>column part with Chart A</li>
+<li><code>data-width=650</code> : width by pixel</li>
+<li><code>.tabset</code> : tabset layout, where columns &gt; 2
+<ul>
+<li><code>.tabset-fade</code> : fade effect</li>
+</ul></li>
+</ul>
+</div>
+<div id="dygraph-추가" class="section level3">
+<h3><code>dygraph</code> 추가</h3>
+<ul>
+<li>flexdashboard에는 Javascript 추가 가능</li>
+</ul>
+</div>
+</div>
